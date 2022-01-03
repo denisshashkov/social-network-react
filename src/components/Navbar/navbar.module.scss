@@ -1,0 +1,10 @@
+.navbar {
+  grid-area: nav;
+  background-color: green;
+  &__list {
+    list-style: none;
+  }
+  &__item a {
+    text-decoration: none;
+  }
+}
