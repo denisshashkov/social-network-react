@@ -7,7 +7,7 @@ import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
 
-function App({ state, addUser, addPost, changePostText }) {
+function App({ state, dispatch }) {
   return (
     <BrowserRouter>
       <div className="app__wrapper">
@@ -21,8 +21,7 @@ function App({ state, addUser, addPost, changePostText }) {
                 <Profile
                   posts={state.profilePage.posts}
                   newPostText={state.profilePage.newPostText}
-                  addPost={addPost}
-                  changePostText={changePostText}
+                  dispatch={dispatch}
                 />
               }
             />
@@ -32,7 +31,7 @@ function App({ state, addUser, addPost, changePostText }) {
                 <Dialogs
                   dialogsData={state.messagesPage.dialogsData}
                   dialogsMessages={state.messagesPage.dialogsMessages}
-                  addUser={addUser}
+                  dispatch={dispatch}
                 />
               }
             />

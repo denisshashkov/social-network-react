@@ -3,7 +3,7 @@ import DialogItem from "./DialogItem/DialogItem";
 import DialogMessage from "./DialogMessage/DialogMessage";
 import classes from "./dialogs.module.scss";
 
-const Dialogs = ({ dialogsData, dialogsMessages, addUser }) => {
+const Dialogs = ({ dialogsData, dialogsMessages, dispatch }) => {
   const items = dialogsData.map((dialog) => (
     <DialogItem name={dialog.name} key={dialog.id} />
   ));
@@ -14,7 +14,7 @@ const Dialogs = ({ dialogsData, dialogsMessages, addUser }) => {
 
   const name = React.createRef();
   const addNameHandler = () => {
-    addUser(name.current.value);
+    dispatch({ type: "ADD-USER", userName: name.current.value });
     name.current.value = "";
   };
 

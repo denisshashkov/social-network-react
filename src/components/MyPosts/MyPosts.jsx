@@ -2,18 +2,18 @@ import React from "react";
 import Post from "./Post/Post";
 import classes from "./myPosts.module.scss";
 
-const Myposts = ({ posts, addPost, changePostText, newPostText }) => {
+const Myposts = ({ posts, dispatch, newPostText }) => {
   const items = posts.map((post) => (
     <Post likeCount={post.likeCount} message={post.message} key={post.id} />
   ));
-  const newPost = React.createRef();
+  let newPost = React.createRef();
 
   const addPostHandler = () => {
-    addPost(newPost.current.value);
+    dispatch({ type: "ADD-POST" });
   };
 
   const onPostChange = () => {
-    changePostText(newPost.current.value);
+    dispatch({ type: "UPDATE-NEW-POST-TEXT", newText: newPost.current.value });
   };
 
   return (
