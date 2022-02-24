@@ -1,13 +1,25 @@
 .navbar {
   grid-area: nav;
-  background-color: green;
+  background: linear-gradient(
+    to bottom,
+    rgba(43, 57, 144, 0.8),
+    rgba(39, 170, 225, 1) 65%
+  );
+
+  text-align: center;
   &__list {
     list-style: none;
+    padding: 10px 0px;
+    margin: 0;
   }
-  &__item a {
+  &__item {
     text-decoration: none;
     font-family: "Lobster", cursive;
     color: white;
     font-size: 32px;
+  }
+  &__item .active {
+    color: gold;
+    text-decoration: none;
   }
 }

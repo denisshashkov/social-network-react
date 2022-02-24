@@ -1,0 +1,10 @@
+.profile {
+  &__cover {
+    background: url("https://images.unsplash.com/photo-1525026198548-4baa812f1183?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGZyaWVuZHxlbnwwfHwwfHw%3D&w=1000&q=80")
+      no-repeat;
+    background-position: center 37%;
+    background-size: cover;
+    min-height: 360px;
+    position: relative;
+  }
+}

@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./post.module.scss";
 
-const Post = () => {
+const Post = ({ message, likeCount }) => {
   return (
     <div className={classes.item}>
       <img
@@ -9,9 +9,9 @@ const Post = () => {
         src="https://image.shutterstock.com/z/stock-vector-asian-boy-smiling-male-avatar-cartoon-guy-character-facial-expression-smile-vector-illustration-625960208.jpg"
         alt=""
       />
-      Post text
+      {message}
       <div>
-        <button>Like!</button>
+        <button>{likeCount}</button>
       </div>
     </div>
   );
