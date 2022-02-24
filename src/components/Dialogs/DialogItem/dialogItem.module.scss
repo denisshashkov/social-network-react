@@ -1,0 +1,6 @@
+.dialogs__item {
+  color: white;
+  & .active {
+    color: gold;
+  }
+}
