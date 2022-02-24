@@ -30,36 +30,36 @@ const store = {
     musicPage: {},
     settingsPage: {},
   },
-  getState() {
-    return this._state;
-  },
   _callSubscriber() {
     console.log("state rerender");
   },
-  addUser(userName) {
-    let newUser = {
-      id: Date.now(),
-      name: userName,
-    };
-    this._state.messagesPage.dialogsData.push(newUser);
-    this._callSubscriber();
-  },
-  addPost() {
-    let newPost = {
-      id: Date.now(),
-      message: this._state.profilePage.newPostText,
-      likeCount: 0,
-    };
-    this._state.profilePage.posts.push(newPost);
-    this._state.profilePage.newPostText = "";
-    this._callSubscriber();
-  },
-  changePostText(newText) {
-    this._state.profilePage.newPostText = newText;
-    this._callSubscriber();
+  getState() {
+    return this._state;
   },
   subscribe(observer) {
     this._callSubscriber = observer;
+  },
+  dispatch(action) {
+    if (action.type === "ADD-POST") {
+      let newPost = {
+        id: Date.now(),
+        message: this._state.profilePage.newPostText,
+        likeCount: 0,
+      };
+      this._state.profilePage.posts.push(newPost);
+      this._state.profilePage.newPostText = "";
+      this._callSubscriber();
+    } else if (action.type === "UPDATE-NEW-POST-TEXT") {
+      this._state.profilePage.newPostText = action.newText;
+      this._callSubscriber();
+    } else if (action.type === "ADD-USER") {
+      let newUser = {
+        id: Date.now(),
+        name: action.userName,
+      };
+      this._state.messagesPage.dialogsData.push(newUser);
+      this._callSubscriber();
+    }
   },
 };
 
