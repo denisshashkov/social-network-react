@@ -1,3 +1,7 @@
+import profileReducer from "./profileReducer";
+import messagesReducer from "./messagesReducer";
+import navBarReducer from "./navBarReducer";
+
 const store = {
   _state: {
     profilePage: {
@@ -25,14 +29,16 @@ const store = {
         { id: 4, message: "Yo" },
         { id: 5, message: "I am fine thanks!" },
       ],
+      newMessageBody: "",
     },
     newsPage: {},
     musicPage: {},
     settingsPage: {},
+    navBar: {},
   },
-  _callSubscriber() {
-    console.log("state rerender");
-  },
+  // _callSubscriber() {
+  //   console.log("state rerender");
+  // },
   getState() {
     return this._state;
   },
@@ -40,26 +46,14 @@ const store = {
     this._callSubscriber = observer;
   },
   dispatch(action) {
-    if (action.type === "ADD-POST") {
-      let newPost = {
-        id: Date.now(),
-        message: this._state.profilePage.newPostText,
-        likeCount: 0,
-      };
-      this._state.profilePage.posts.push(newPost);
-      this._state.profilePage.newPostText = "";
-      this._callSubscriber();
-    } else if (action.type === "UPDATE-NEW-POST-TEXT") {
-      this._state.profilePage.newPostText = action.newText;
-      this._callSubscriber();
-    } else if (action.type === "ADD-USER") {
-      let newUser = {
-        id: Date.now(),
-        name: action.userName,
-      };
-      this._state.messagesPage.dialogsData.push(newUser);
-      this._callSubscriber();
-    }
+    this._state.profilePage = profileReducer(this._state.profilePage, action);
+    this._state.messagesPage = messagesReducer(
+      this._state.messagesPage,
+      action
+    );
+    this._state.navBar = navBarReducer(this._state.navBar, action);
+
+    this._callSubscriber(this._state);
   },
 };
 

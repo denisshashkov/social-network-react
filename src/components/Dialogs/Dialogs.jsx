@@ -1,9 +1,18 @@
 import React from "react";
+import {
+  sendMessageCreator,
+  updateNewMessageBodyCreator,
+} from "../../redux/messagesReducer";
 import DialogItem from "./DialogItem/DialogItem";
 import DialogMessage from "./DialogMessage/DialogMessage";
 import classes from "./dialogs.module.scss";
 
-const Dialogs = ({ dialogsData, dialogsMessages, dispatch }) => {
+const Dialogs = ({
+  dialogsData,
+  dialogsMessages,
+  newMessageBody,
+  dispatch,
+}) => {
   const items = dialogsData.map((dialog) => (
     <DialogItem name={dialog.name} key={dialog.id} />
   ));
@@ -12,18 +21,32 @@ const Dialogs = ({ dialogsData, dialogsMessages, dispatch }) => {
     <DialogMessage text={message.message} key={message.id} />
   ));
 
-  const name = React.createRef();
-  const addNameHandler = () => {
-    dispatch({ type: "ADD-USER", userName: name.current.value });
-    name.current.value = "";
+  const sendMessageHandler = () => {
+    dispatch(sendMessageCreator());
+  };
+  const NewMessageChangeHandler = (e) => {
+    let body = e.target.value;
+    dispatch(updateNewMessageBodyCreator(body));
   };
 
   return (
     <div className={classes.dialogs}>
       <div className={classes.dialogs__items}>{items}</div>
-      <div className={classes.dialogs__messages}>{messages}</div>
-      <textarea ref={name}></textarea>
-      <button onClick={addNameHandler}>add</button>
+      <div className={classes.dialogs__messages}>
+        <div>{messages}</div>
+        <div>
+          <div>
+            <textarea
+              value={newMessageBody}
+              onChange={NewMessageChangeHandler}
+              placeholder="Enter your message"
+            ></textarea>
+          </div>
+          <div>
+            <button onClick={sendMessageHandler}>Send</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
