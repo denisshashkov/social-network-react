@@ -2,10 +2,10 @@ import { Routes, Route } from "react-router-dom";
 import Profile from "./components/Profile/Profile";
 import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
-import Dialogs from "./components/Dialogs/Dialogs";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
+import DialogsContainer from "./components/Dialogs/DialogsContainer";
 
 function App({ state, dispatch }) {
   return (
@@ -27,7 +27,7 @@ function App({ state, dispatch }) {
           <Route
             path="/dialogs"
             element={
-              <Dialogs
+              <DialogsContainer
                 dialogsData={state.messagesPage.dialogsData}
                 dialogsMessages={state.messagesPage.dialogsMessages}
                 newMessageBody={state.messagesPage.newMessageBody}
