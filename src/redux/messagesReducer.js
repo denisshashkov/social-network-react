@@ -9,7 +9,7 @@ const initialState = {
     { id: 4, name: "Grisha" },
     { id: 5, name: "Tonya" },
   ],
-  dialogsMessages: [
+  messages: [
     { id: 1, message: "Hello" },
     { id: 2, message: "Hi!" },
     { id: 3, message: "How are you?" },
@@ -22,16 +22,21 @@ const initialState = {
 const messagesReducer = (state = initialState, action) => {
   switch (action.type) {
     case UPDATE_NEW_MESSAGE_BODY:
-      state.newMessageBody = action.body;
-      return state;
+      return { ...state, newMessageBody: action.body };
+
     case SEND_MESSAGE:
       let body = state.newMessageBody;
-      state.newMessageBody = "";
-      state.dialogsMessages.push({
-        id: Date.now(),
-        message: body,
-      });
-      return state;
+      return {
+        ...state,
+        newMessageBody: "",
+        messages: [
+          ...state.messages,
+          {
+            id: Date.now(),
+            message: body,
+          },
+        ],
+      };
 
     default:
       return state;

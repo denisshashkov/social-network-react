@@ -3,27 +3,22 @@ import DialogItem from "./DialogItem/DialogItem";
 import DialogMessage from "./DialogMessage/DialogMessage";
 import classes from "./dialogs.module.scss";
 
-const Dialogs = ({
-  dialogsData,
-  dialogsMessages,
-  newMessageBody,
-  sendMessage,
-  newMessageChange,
-}) => {
-  const items = dialogsData.map((dialog) => (
+const Dialogs = (props) => {
+  let state = props.messagesPage;
+  const items = state.dialogsData.map((dialog) => (
     <DialogItem name={dialog.name} key={dialog.id} />
   ));
 
-  const messages = dialogsMessages.map((message) => (
+  const messages = state.messages.map((message) => (
     <DialogMessage text={message.message} key={message.id} />
   ));
 
   const sendMessageHandler = () => {
-    sendMessage();
+    props.sendMessage();
   };
   const newMessageChangeHandler = (e) => {
     let body = e.target.value;
-    newMessageChange(body);
+    props.newMessageChange(body);
   };
 
   return (
@@ -34,7 +29,7 @@ const Dialogs = ({
         <div>
           <div>
             <textarea
-              value={newMessageBody}
+              value={props.newMessageBody}
               onChange={newMessageChangeHandler}
               placeholder="Enter your message"
             ></textarea>

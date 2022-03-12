@@ -3,18 +3,19 @@ import Post from "./Post/Post";
 
 import classes from "./myPosts.module.scss";
 
-const Myposts = ({ posts, addPost, updateNewPostText, newPostText }) => {
-  const items = posts.map((post) => (
+const Myposts = (props) => {
+  let state = props.profilePage;
+  const items = state.posts.map((post) => (
     <Post likeCount={post.likeCount} message={post.message} key={post.id} />
   ));
 
   const addPostHandler = () => {
-    addPost();
+    props.addPost();
   };
 
   const onPostChangeHandler = (e) => {
     let newText = e.target.value;
-    updateNewPostText(newText);
+    props.updateNewPostText(newText);
   };
 
   return (
@@ -22,7 +23,7 @@ const Myposts = ({ posts, addPost, updateNewPostText, newPostText }) => {
       <textarea
         onChange={onPostChangeHandler}
         placeholder="Enter your post"
-        value={newPostText}
+        value={props.newPostText}
       ></textarea>
       <button onClick={addPostHandler}>Add Post</button>
       <div className={classes.posts}>{items}</div>
