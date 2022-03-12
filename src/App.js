@@ -14,27 +14,8 @@ function App({ state, dispatch }) {
       <Navbar />
       <div className="app__wrapper__content">
         <Routes>
-          <Route
-            path="/profile"
-            element={
-              <Profile
-                posts={state.profilePage.posts}
-                newPostText={state.profilePage.newPostText}
-                dispatch={dispatch}
-              />
-            }
-          />
-          <Route
-            path="/dialogs"
-            element={
-              <DialogsContainer
-                dialogsData={state.messagesPage.dialogsData}
-                dialogsMessages={state.messagesPage.dialogsMessages}
-                newMessageBody={state.messagesPage.newMessageBody}
-                dispatch={dispatch}
-              />
-            }
-          />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/dialogs" element={<DialogsContainer />} />
           <Route path="/news" element={<News />} />
           <Route path="/music" element={<Music />} />
           <Route path="/settings" element={<Settings />} />
