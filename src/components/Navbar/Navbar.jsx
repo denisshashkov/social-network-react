@@ -18,6 +18,17 @@ const Navbar = () => {
         </li>
         <li className={classes.navbar__item}>
           <NavLink
+            to="/users"
+            className={({ isActive }) =>
+              isActive ? classes.active : classes.navbar__item
+            }
+          >
+            Users
+          </NavLink>
+        </li>
+
+        <li className={classes.navbar__item}>
+          <NavLink
             to="/dialogs"
             className={({ isActive }) =>
               isActive ? classes.active : classes.navbar__item
