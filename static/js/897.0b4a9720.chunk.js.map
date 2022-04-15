@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/897.0b4a9720.chunk.js","mappings":"mMAOA,EAJc,WACZ,OAAO","sources":["components/Music/Music.jsx"],"sourcesContent":["import React from \"react\";\r\nimport classes from \"./music.module.scss\";\r\n\r\nconst Music = () => {\r\n  return <div>Music</div>;\r\n};\r\n\r\nexport default Music;\r\n"],"names":[],"sourceRoot":""}
