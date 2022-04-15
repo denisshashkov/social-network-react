@@ -1,0 +1,14 @@
+.pageNumber {
+  margin-right: 10px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.selectedPage {
+  font-weight: bold;
+  margin-right: 10px;
+  &:hover {
+    cursor: pointer;
+  }
+}

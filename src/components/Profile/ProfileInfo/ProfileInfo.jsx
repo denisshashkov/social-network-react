@@ -1,18 +1,27 @@
 import React from "react";
+import PreLoader from "../../UI/preloader/PreLoader";
+import ProfileStatus from "./ProfileStatus";
+import avatar from "../../../assets/image/user.png";
 import classes from "./profileInfo.module.scss";
 
-const ProfileInfo = () => {
+const ProfileInfo = ({ profile, status, updateStatus }) => {
+  if (!profile) {
+    return <PreLoader />;
+  }
   return (
-    <div className={classes.profile__info}>
-      <img
-        className={classes.profile__info__photo}
-        src="http://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
-        alt=""
-      />
-      <div className={classes.profile__info__description}>
-        <h3>Sarah Cruiz</h3>
-        <p>Creative Director</p>
+    <div>
+      <div className={classes.profile__info}>
+        <img
+          className={classes.profile__info__photo}
+          src={profile.photos.large ? profile.photos.large : avatar}
+          alt="No Avatar"
+        />
+        <div className={classes.profile__info__description}>
+          <h3>{profile.fullName}</h3>
+          <p>{profile.aboutMe}</p>
+        </div>
       </div>
+      <ProfileStatus status={status} updateStatus={updateStatus} />
     </div>
   );
 };

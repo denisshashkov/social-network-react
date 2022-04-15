@@ -3,11 +3,15 @@ import MyPostsContainer from "../MyPosts/MyPostsContainer";
 import classes from "./profile.module.scss";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 
-const Profile = () => {
+const Profile = ({ profile, status, updateStatus }) => {
   return (
     <main className={classes.profile}>
       <div className={classes.profile__cover}>
-        <ProfileInfo />
+        <ProfileInfo
+          profile={profile}
+          status={status}
+          updateStatus={updateStatus}
+        />
       </div>
       <MyPostsContainer />
     </main>

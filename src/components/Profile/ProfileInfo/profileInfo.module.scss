@@ -1,22 +1,22 @@
 .profile__info {
-  display: grid;
+  //display: grid;
   grid-auto-flow: column;
-  position: absolute;
+  //position: absolute;
   padding: 0 20px;
   z-index: 999;
   top: 170px;
   &__description {
-    display: grid;
-    text-align: center;
+    //display: grid;
+    //text-align: center;
     & h3 {
       color: white;
-      font-family: "Lobster", cursive;
+      font-family: "Lobster";
       font-size: 28px;
       margin: 0;
-      align-self: end;
+      //align-self: end;
     }
     & p {
-      align-self: start;
+      //align-self: start;
       color: white;
       margin: 0;
     }
