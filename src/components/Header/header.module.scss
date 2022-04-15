@@ -4,9 +4,9 @@
   display: grid;
   grid-auto-flow: column;
   align-items: center;
-  justify-content: center;
+
   text-align: center;
-  height: 50px;
+
   background-color: #231f20;
   &__logo {
     width: 50px;
@@ -22,5 +22,11 @@
     color: white;
     margin: 0;
     font-family: "Lobster", cursive;
+  }
+  &__login {
+    width: fit-content;
+  }
+  &__login h3 {
+    color: white;
   }
 }

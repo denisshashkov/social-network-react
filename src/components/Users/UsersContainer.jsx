@@ -1,85 +1,64 @@
 import React, { Component } from "react";
-import axios from "axios";
 import Users from "./Users";
+import Preloader from "../UI/preloader/PreLoader";
 import {
-  followActionCreator,
-  unfollowActionCreator,
-  getUsersActionCreator,
-  getCurrentPageActionCreator,
-  getUsersCountCreator,
+  getUsersThunkCreator,
+  unFollowThunkCreator,
+  followThunkCreator,
+  follow,
+  unFollow,
+  getCurrentPage,
+  disabledButton,
 } from "../../redux/usersReducer";
 import { connect } from "react-redux";
+import {
+  getAllUsers,
+  getFollowingProgress,
+  getIsFetching,
+  getPageSize,
+  getTotalUserCount,
+  getPage,
+} from "../../redux/usersSelectors";
 
-class UsersApiComponent extends Component {
+class UsersContainer extends Component {
   componentDidMount = () => {
-    axios
-      .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`
-      )
-      .then((response) => {
-        this.props.getUsers(response.data.items);
-        this.props.getUsersCount(response.data.totalCount);
-      });
+    const { currentPage, pageSize } = this.props;
+
+    this.props.getUsersThunkCreator(currentPage, pageSize);
   };
 
   changePageHandler = (page) => {
-    this.props.getCurrentPage(page);
-    axios
-      .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`
-      )
-      .then((response) => {
-        this.props.getUsers(response.data.items);
-      });
+    const { pageSize } = this.props;
+    this.props.getUsersThunkCreator(page, pageSize);
   };
 
   render = () => {
     return (
-      <Users
-        totalUsersCount={this.props.totalUsersCount}
-        pageSize={this.props.pageSize}
-        currentPage={this.props.currentPage}
-        changePageHandler={this.changePageHandler}
-        users={this.props.users}
-        follow={this.props.follow}
-        unFollow={this.props.unFollow}
-      />
+      <>
+        {this.props.isFetching ? <Preloader /> : null}
+        <Users {...this.props} changePageHandler={this.changePageHandler} />
+      </>
     );
   };
 }
 
 const mapStateToProps = (state) => {
   return {
-    users: state.usersPage.users,
-    pageSize: state.usersPage.pageSize,
-    totalUsersCount: state.usersPage.totalUsersCount,
-    currentPage: state.usersPage.currentPage,
+    users: getAllUsers(state),
+    followingProgress: getFollowingProgress(state),
+    isFetching: getIsFetching(state),
+    pageSize: getPageSize(state),
+    totalUsersCount: getTotalUserCount(state),
+    currentPage: getPage(state),
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    follow: (userId) => {
-      dispatch(followActionCreator(userId));
-    },
-    unFollow: (userId) => {
-      dispatch(unfollowActionCreator(userId));
-    },
-    getUsers: (users) => {
-      dispatch(getUsersActionCreator(users));
-    },
-    getUsersCount: (usersCount) => {
-      dispatch(getUsersCountCreator(usersCount));
-    },
-    getCurrentPage: (page) => {
-      dispatch(getCurrentPageActionCreator(page));
-    },
-  };
-};
-
-const UsersContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UsersApiComponent);
-
-export default UsersContainer;
+export default connect(mapStateToProps, {
+  follow,
+  unFollow,
+  getCurrentPage,
+  disabledButton,
+  getUsersThunkCreator,
+  unFollowThunkCreator,
+  followThunkCreator,
+})(UsersContainer);

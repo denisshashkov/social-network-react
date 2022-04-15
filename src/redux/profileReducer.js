@@ -1,35 +1,37 @@
+import { profileAPI } from "../api/api";
 const ADD_POST = "ADD-POST";
-const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
+const GET_USER_PROFILE = "GET_USER_PROFILE";
+const GET_PROFILE_STATUS = "GET_PROFILE_STATUS";
 
 const initialState = {
   posts: [
-    { id: 1, message: "how are you?", likeCount: 15 },
-    { id: 2, message: "Hello!", likeCount: 24 },
-    { id: 3, message: "Yo!", likeCount: 31 },
-    { id: 4, message: "what is your name?", likeCount: 8 },
-    { id: 5, message: "I am Denis", likeCount: 46 },
+    { id: 1, post: "how are you?", likeCount: 15 },
+    { id: 2, post: "Hello!", likeCount: 24 },
   ],
-  newPostText: "",
+
+  profile: null,
+  status: "",
 };
 
 const profileReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_POST: {
-      let newPost = {
-        id: Date.now(),
-        message: state.newPostText,
-        likeCount: 0,
-      };
       return {
         ...state,
-        posts: [...state.posts, newPost],
-        newPostText: "",
+        posts: [...state.posts, action.post],
       };
     }
-    case UPDATE_NEW_POST_TEXT: {
+
+    case GET_USER_PROFILE: {
       return {
         ...state,
-        newPostText: action.newText,
+        profile: action.profile,
+      };
+    }
+    case GET_PROFILE_STATUS: {
+      return {
+        ...state,
+        status: action.status,
       };
     }
     default:
@@ -37,10 +39,38 @@ const profileReducer = (state = initialState, action) => {
   }
 };
 
-export const addPostActionCreator = () => ({ type: ADD_POST });
-export const updateNewPostTextCreator = (text) => ({
-  type: UPDATE_NEW_POST_TEXT,
-  newText: text,
+export const addPostActionCreator = (post) => ({ type: ADD_POST, post });
+
+export const getUserProfile = (profile) => ({
+  type: GET_USER_PROFILE,
+  profile,
 });
+
+export const getProfileStatusActionCreator = (status) => ({
+  type: GET_PROFILE_STATUS,
+  status,
+});
+
+export const getProfileThunkCreator = (userId) => {
+  return async (dispatch) => {
+    let data = await profileAPI.setUserProfile(userId);
+    dispatch(getUserProfile(data));
+  };
+};
+export const getProfileStatusThunkCreator = (userId) => {
+  return async (dispatch) => {
+    let data = await profileAPI.getUserProfileStatus(userId);
+    dispatch(getProfileStatusActionCreator(data));
+  };
+};
+
+export const updateProfileStatusThunkCreator = (status) => {
+  return async (dispatch) => {
+    let data = await profileAPI.updateUserProfileStatus(status);
+    if (data.resultCode === 0) {
+      dispatch(getProfileStatusActionCreator(status));
+    }
+  };
+};
 
 export default profileReducer;

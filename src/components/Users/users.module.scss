@@ -2,18 +2,3 @@
   width: 50px;
   height: 50px;
 }
-
-.selectedPage {
-  font-weight: bold;
-  margin-right: 10px;
-  &:hover {
-    cursor: pointer;
-  }
-}
-
-.pageNumber {
-  margin-right: 10px;
-  &:hover {
-    cursor: pointer;
-  }
-}
