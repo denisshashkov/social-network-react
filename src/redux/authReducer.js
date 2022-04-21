@@ -1,6 +1,7 @@
-import { authAPI } from "../api/api";
+import { authAPI, securityAPI } from "../api/api";
 const SET_USER_DATA = "SET_USER_DATA";
 const SET_LOGIN = "SET_LOGIN";
+const GET_CAPTCHA = "GET_CAPTCHA";
 
 const initialState = {
   id: null,
@@ -9,6 +10,7 @@ const initialState = {
   password: "",
   rememberMe: false,
   isAuth: false,
+  captcha: null,
 };
 
 const authReducer = (state = initialState, action) => {
@@ -25,6 +27,11 @@ const authReducer = (state = initialState, action) => {
         password: action.password,
         rememberMe: action.rememberMe,
       };
+    case GET_CAPTCHA:
+      return {
+        ...state,
+        ...action.payLoad,
+      };
 
     default:
       return state;
@@ -34,6 +41,11 @@ const authReducer = (state = initialState, action) => {
 export const setAuthUserData = (id, email, login, isAuth) => ({
   type: SET_USER_DATA,
   data: { id, email, login, isAuth },
+});
+
+export const getCaptchaActionCreator = (captcha) => ({
+  type: GET_CAPTCHA,
+  payLoad: { captcha },
 });
 
 export const setLoginActionCreator = (
@@ -60,13 +72,17 @@ export const setLoginThunkCreator = (
   email,
   password,
   rememberMe,
-  setStatus
+  setStatus,
+  captcha
 ) => {
   return async (dispatch) => {
-    let data = await authAPI.setLogin(email, password, rememberMe);
+    let data = await authAPI.setLogin(email, password, rememberMe, captcha);
     if (data.resultCode === 0) {
       dispatch(getDataThunkCreator());
     } else {
+      if (data.resultCode === 10) {
+        dispatch(getCaptchaThunkCreator());
+      }
       let serverErrorMessage =
         data.messages.length > 0 ? data.messages : "Some Error";
       setStatus({ error: serverErrorMessage });
@@ -80,6 +96,14 @@ export const setLogoutThunkCreator = () => {
     if (data.resultCode === 0) {
       dispatch(setAuthUserData(null, null, null, false));
     }
+  };
+};
+
+export const getCaptchaThunkCreator = () => {
+  return async (dispatch) => {
+    let data = await securityAPI.getCaptcha();
+    const captcha = data.url;
+    dispatch(getCaptchaActionCreator(captcha));
   };
 };
 

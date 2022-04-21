@@ -3,7 +3,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import classes from "./formStyles.module.scss";
 
-const LoginForm = ({ submitHandler }) => {
+const LoginForm = ({ submitHandler, captcha }) => {
   const validationsSchema = Yup.object().shape({
     email: Yup.string().required("Required field"),
     password: Yup.string().required("Required field"),
@@ -12,7 +12,12 @@ const LoginForm = ({ submitHandler }) => {
   return (
     <div>
       <Formik
-        initialValues={{ email: "", password: "", rememberMe: false }}
+        initialValues={{
+          email: "",
+          password: "",
+          rememberMe: false,
+          captcha: "",
+        }}
         onSubmit={submitHandler}
         validationSchema={validationsSchema}
       >
@@ -49,6 +54,21 @@ const LoginForm = ({ submitHandler }) => {
               <Field type={"checkbox"} name={"rememberMe"} />
               Remember me
             </div>
+
+            {captcha && <img src={captcha} alt="captcha" />}
+            {captcha && (
+              <div>
+                <Field
+                  placeholder={"Insert captcha symbols"}
+                  name={"captcha"}
+                  className={
+                    errors.captcha && touched.captcha
+                      ? classes.error__border
+                      : null
+                  }
+                />
+              </div>
+            )}
 
             {status ? <p className={classes.error}>{status.error}</p> : null}
 
