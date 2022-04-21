@@ -4,9 +4,18 @@ import LoginForm from "../Forms/LoginForm";
 import { setLoginThunkCreator } from "../../redux/authReducer";
 import { Navigate } from "react-router-dom";
 
-const Login = ({ isAuth, setLoginThunkCreator }) => {
-  const submitHandler = ({ email, password, rememberMe }, submitProps) => {
-    setLoginThunkCreator(email, password, rememberMe, submitProps.setStatus);
+const Login = ({ isAuth, setLoginThunkCreator, captcha }) => {
+  const submitHandler = (
+    { email, password, rememberMe, captcha },
+    submitProps
+  ) => {
+    setLoginThunkCreator(
+      email,
+      password,
+      rememberMe,
+      submitProps.setStatus,
+      captcha
+    );
   };
 
   if (isAuth) {
@@ -16,13 +25,14 @@ const Login = ({ isAuth, setLoginThunkCreator }) => {
   return (
     <div>
       <h1>Login</h1>
-      <LoginForm submitHandler={submitHandler} />
+      <LoginForm submitHandler={submitHandler} captcha={captcha} />
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
   isAuth: state.auth.isAuth,
+  captcha: state.auth.captcha,
 });
 
 export default connect(mapStateToProps, { setLoginThunkCreator })(Login);

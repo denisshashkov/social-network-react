@@ -26,7 +26,9 @@ const ProfileStatus = (props) => {
     <div className={classes.profile__status}>
       {!editMode ? (
         <div>
-          <span onClick={editModeHandler}>{props.status || "Add status"}</span>
+          <span onClick={editModeHandler}>
+            Status: {props.status || "Add status"}
+          </span>
         </div>
       ) : (
         <div>

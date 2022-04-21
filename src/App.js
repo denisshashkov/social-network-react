@@ -4,7 +4,11 @@ import { Route, Routes } from "react-router-dom";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Navbar from "./components/Navbar/Navbar";
 import Preloader from "./components/UI/preloader/PreLoader";
-import { initializeSuccessThunkCreator } from "./redux/appReducer";
+import ErrorComponent from "./components/UI/errors/ErrorComponent";
+import {
+  initializeSuccessThunkCreator,
+  globalErrorThunkCreator,
+} from "./redux/appReducer";
 const DialogsContainer = lazy(() =>
   import("./components/Dialogs/DialogsContainer")
 );
@@ -20,10 +24,22 @@ const Login = lazy(() => import("./components/Login/Login"));
 class App extends Component {
   componentDidMount() {
     this.props.initializeSuccessThunkCreator();
+    window.addEventListener(
+      "unhandledrejection",
+      this.props.globalErrorThunkCreator
+    );
   }
+
+  componentWillUnmount() {
+    window.removeEventListener(
+      "unhandledrejection",
+      this.props.globalErrorThunkCreator
+    );
+  }
+
   render() {
-    if (!this.props.initialized) {
-      return <Preloader />;
+    if (this.props.globalError) {
+      return <ErrorComponent />;
     }
     return (
       <div className="app__wrapper">
@@ -50,7 +66,11 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     initialized: state.app.initialized,
+    globalError: state.app.globalError,
   };
 };
 
-export default connect(mapStateToProps, { initializeSuccessThunkCreator })(App);
+export default connect(mapStateToProps, {
+  initializeSuccessThunkCreator,
+  globalErrorThunkCreator,
+})(App);

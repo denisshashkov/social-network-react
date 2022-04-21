@@ -2,6 +2,8 @@ import { profileAPI } from "../api/api";
 const ADD_POST = "ADD-POST";
 const GET_USER_PROFILE = "GET_USER_PROFILE";
 const GET_PROFILE_STATUS = "GET_PROFILE_STATUS";
+const SAVE_PHOTO_SUCCESS = "SAVE_PHOTO_SUCCESS";
+const SAVE_DATA_SUCCESS = "SAVE_DATA_SUCCESS";
 
 const initialState = {
   posts: [
@@ -34,6 +36,18 @@ const profileReducer = (state = initialState, action) => {
         status: action.status,
       };
     }
+    case SAVE_PHOTO_SUCCESS: {
+      return {
+        ...state,
+        profile: { ...state.profile, photos: action.photos },
+      };
+    }
+    case SAVE_DATA_SUCCESS: {
+      return {
+        ...state,
+        profile: { ...state.profile, formData: action.formData },
+      };
+    }
     default:
       return state;
   }
@@ -49,6 +63,16 @@ export const getUserProfile = (profile) => ({
 export const getProfileStatusActionCreator = (status) => ({
   type: GET_PROFILE_STATUS,
   status,
+});
+
+export const savePhotoSuccessActionCreator = (photos) => ({
+  type: SAVE_PHOTO_SUCCESS,
+  photos,
+});
+
+export const saveDataSuccessActionCreator = (formData) => ({
+  type: SAVE_DATA_SUCCESS,
+  formData,
 });
 
 export const getProfileThunkCreator = (userId) => {
@@ -69,6 +93,30 @@ export const updateProfileStatusThunkCreator = (status) => {
     let data = await profileAPI.updateUserProfileStatus(status);
     if (data.resultCode === 0) {
       dispatch(getProfileStatusActionCreator(status));
+    }
+  };
+};
+
+export const savePhotoThunkCreator = (file) => {
+  return async (dispatch) => {
+    let data = await profileAPI.savePhoto(file);
+    if (data.resultCode === 0) {
+      dispatch(savePhotoSuccessActionCreator(data.data.photos));
+    }
+  };
+};
+
+export const saveDataThunkCreator = (formData, setStatus) => {
+  return async (dispatch, getState) => {
+    const userId = getState().auth.id;
+    let data = await profileAPI.saveData(formData);
+
+    if (data.resultCode === 0) {
+      dispatch(getProfileThunkCreator(userId));
+    } else {
+      let serverErrorMessage =
+        data.messages.length > 0 ? data.messages : "Some Error";
+      setStatus({ error: serverErrorMessage });
     }
   };
 };

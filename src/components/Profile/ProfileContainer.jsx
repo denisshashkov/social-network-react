@@ -7,24 +7,40 @@ import {
   getProfileThunkCreator,
   getProfileStatusThunkCreator,
   updateProfileStatusThunkCreator,
+  savePhotoThunkCreator,
+  saveDataThunkCreator,
 } from "../../redux/profileReducer";
 import { compose } from "redux";
 
 class ProfileContainer extends Component {
-  componentDidMount = () => {
+  refreshProfile() {
     let userId = this.props.match
       ? this.props.match.params.userId
       : this.props.authorizedUserId;
     this.props.getProfileThunkCreator(userId);
     this.props.getProfileStatusThunkCreator(userId);
+  }
+
+  componentDidMount = () => {
+    this.refreshProfile();
   };
+
+  componentDidUpdate = (prevProps) => {
+    if (this.props.match !== prevProps.match) {
+      this.refreshProfile();
+    }
+  };
+
   render() {
     return (
       <Profile
         {...this.props}
+        owner={this.props.match === null}
         profile={this.props.profile}
         status={this.props.status}
         updateStatus={this.props.updateProfileStatusThunkCreator}
+        savePhoto={this.props.savePhotoThunkCreator}
+        saveData={this.props.saveDataThunkCreator}
       />
     );
   }
@@ -50,5 +66,7 @@ export default compose(
     getProfileThunkCreator,
     getProfileStatusThunkCreator,
     updateProfileStatusThunkCreator,
+    savePhotoThunkCreator,
+    saveDataThunkCreator,
   })
 )(ProfileURLMatch);
