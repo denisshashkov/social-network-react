@@ -1,22 +1,16 @@
 /* eslint-disable no-undef */
-import React, { Component } from "react";
+import React from "react";
 import Header from "./Header";
-import { connect } from "react-redux";
 import { setLogoutThunkCreator } from "../../redux/authReducer";
+import { getIsAuth, getLogin } from "../../redux/authSelectors";
+import { useSelector } from "react-redux";
 
-class HeaderContainer extends Component {
-  render() {
-    return <Header {...this.props} />;
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    login: state.auth.login,
-    isAuth: state.auth.isAuth,
-  };
+const HeaderContainer = () => {
+  const isAuth = useSelector(getIsAuth);
+  const login = useSelector(getLogin);
+  return (
+    <Header logOut={setLogoutThunkCreator} isAuth={isAuth} login={login} />
+  );
 };
 
-export default connect(mapStateToProps, {
-  setLogoutThunkCreator,
-})(HeaderContainer);
+export default HeaderContainer;

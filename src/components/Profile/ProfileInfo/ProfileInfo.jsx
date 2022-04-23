@@ -5,6 +5,7 @@ import avatar from "../../../assets/image/user.png";
 import classes from "./profileInfo.module.scss";
 import ProfileData from "./ProfileData";
 import ProfileDataForm from "../../Forms/ProfileDataForm";
+import { useDispatch } from "react-redux";
 
 const ProfileInfo = ({
   profile,
@@ -15,15 +16,16 @@ const ProfileInfo = ({
   saveData,
 }) => {
   const [editMode, setEditMode] = useState(false);
+  const dispatch = useDispatch();
   const editModeHandler = () => {
     setEditMode(true);
   };
   const choiseAvatarHandler = (e) => {
-    savePhoto(e.target.files[0]);
+    dispatch(savePhoto(e.target.files[0]));
   };
 
   const submitHandler = (formData, submitProps) => {
-    saveData(formData, submitProps.setStatus);
+    dispatch(saveData(formData, submitProps.setStatus));
     setEditMode(false);
   };
 

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import classes from "./profileStatus.module.scss";
 
 const ProfileStatus = (props) => {
   const [editMode, setEditMode] = useState(false);
   const [status, setStatus] = useState(props.status);
+  const dispatch = useDispatch();
   useEffect(() => {
     setStatus(props.status);
   }, [props.status]);
@@ -14,7 +16,7 @@ const ProfileStatus = (props) => {
 
   const deactivateEditModeHandler = () => {
     setEditMode(false);
-    props.updateStatus(status);
+    dispatch(props.updateStatus(status));
   };
 
   const statusChangeHandler = (e) => {

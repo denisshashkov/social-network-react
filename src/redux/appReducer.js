@@ -29,7 +29,7 @@ export const initializeSuccessActionCreator = () => ({
   type: INITIALIZED_SUCCESS,
 });
 
-export const showErrorActionCreator = (errorText) => ({
+export const showErrorActionCreator = () => ({
   type: GLOBAL_ERROR,
   globalError: true,
 });
@@ -47,13 +47,11 @@ export const initializeSuccessThunkCreator = () => (dispatch) => {
 
 export const globalErrorThunkCreator = (error) => (dispatch) => {
   let statusCode = error.reason.response.status;
-
   if (statusCode >= 400) {
-    dispatch(showErrorActionCreator()).then(
-      setTimeout(() => {
-        dispatch(hideErrorActionCreator());
-      }, 3000)
-    );
+    dispatch(showErrorActionCreator());
+    setTimeout(() => {
+      dispatch(hideErrorActionCreator());
+    }, 3000);
   }
 };
 
