@@ -1,10 +1,12 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import classes from "./header.module.scss";
 
 const Header = (props) => {
+  const dispatch = useDispatch();
   const logoutHandler = () => {
-    props.setLogoutThunkCreator();
+    dispatch(props.logOut());
   };
 
   return (
@@ -28,7 +30,6 @@ const Header = (props) => {
             <h3>Login</h3>
           )}
         </NavLink>
-        <h2>{props.email}</h2>
       </div>
     </header>
   );
