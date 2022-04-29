@@ -1,1 +1,0 @@
-{"version":3,"file":"static/css/289.59eae93e.chunk.css","mappings":"AAAA,yBACE,SAAU,CACV,cAAe,CACf,QAAS,CACT,iCACE,oBAAqB","sources":["components/Forms/formStyles.module.scss"],"sourcesContent":[".error {\r\n  color: red;\r\n  font-size: 18px;\r\n  margin: 0;\r\n  &__border {\r\n    border: solid 2px red;\r\n  }\r\n}\r\n"],"names":[],"sourceRoot":""}
