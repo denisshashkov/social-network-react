@@ -1,10 +1,10 @@
 import React from "react";
-import loader from "../../../assets/image/loader.gif";
+import classes from "./preloader.module.scss";
 
 const Preloader = () => {
   return (
     <div>
-      <img src={loader} alt="LOADING..." />
+      <div className={classes.loading}></div>
     </div>
   );
 };

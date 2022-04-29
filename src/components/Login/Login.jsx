@@ -3,6 +3,7 @@ import React from "react";
 import LoginForm from "../Forms/LoginForm";
 import { setLoginThunkCreator } from "../../redux/authReducer";
 import { Navigate } from "react-router-dom";
+import classes from "./login.module.scss";
 
 const Login = ({ isAuth, setLoginThunkCreator, captcha }) => {
   const submitHandler = (
@@ -23,7 +24,7 @@ const Login = ({ isAuth, setLoginThunkCreator, captcha }) => {
   }
 
   return (
-    <div>
+    <div className={classes.login}>
       <h1>Login</h1>
       <LoginForm submitHandler={submitHandler} captcha={captcha} />
     </div>

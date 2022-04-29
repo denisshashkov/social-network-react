@@ -1,5 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { CgProfile } from "react-icons/cg";
+import { FaUsers, FaMusic } from "react-icons/fa";
+import { TiMessages } from "react-icons/ti";
+import { GiNewspaper } from "react-icons/gi";
+import { FiSettings } from "react-icons/fi";
 import classes from "./navbar.module.scss";
 
 const Navbar = () => {
@@ -13,7 +18,12 @@ const Navbar = () => {
               isActive ? classes.active : classes.navbar__item
             }
           >
-            Profile
+            <div className={classes.navbar__label}>
+              <div className={classes.navbar__icon}>
+                <CgProfile />
+              </div>
+              <span>Profile</span>
+            </div>
           </NavLink>
         </li>
         <li className={classes.navbar__item}>
@@ -23,7 +33,12 @@ const Navbar = () => {
               isActive ? classes.active : classes.navbar__item
             }
           >
-            Users
+            <div className={classes.navbar__label}>
+              <div className={classes.navbar__icon}>
+                <FaUsers />
+              </div>
+              <span>Users</span>
+            </div>
           </NavLink>
         </li>
 
@@ -34,7 +49,12 @@ const Navbar = () => {
               isActive ? classes.active : classes.navbar__item
             }
           >
-            Messages
+            <div className={classes.navbar__label}>
+              <div className={classes.navbar__icon}>
+                <TiMessages />
+              </div>
+              <span>Messages</span>
+            </div>
           </NavLink>
         </li>
         <li className={classes.navbar__item}>
@@ -44,7 +64,12 @@ const Navbar = () => {
               isActive ? classes.active : classes.navbar__item
             }
           >
-            News
+            <div className={classes.navbar__label}>
+              <div className={classes.navbar__icon}>
+                <GiNewspaper />
+              </div>
+              <span>News</span>
+            </div>
           </NavLink>
         </li>
         <li className={classes.navbar__item}>
@@ -54,7 +79,12 @@ const Navbar = () => {
               isActive ? classes.active : classes.navbar__item
             }
           >
-            Music
+            <div className={classes.navbar__label}>
+              <div className={classes.navbar__icon}>
+                <FaMusic />
+              </div>
+              <span>Music</span>
+            </div>
           </NavLink>
         </li>
         <li className={classes.navbar__item}>
@@ -64,7 +94,12 @@ const Navbar = () => {
               isActive ? classes.active : classes.navbar__item
             }
           >
-            Settings
+            <div className={classes.navbar__label}>
+              <div className={classes.navbar__icon}>
+                <FiSettings />
+              </div>
+              <span>Settings</span>
+            </div>
           </NavLink>
         </li>
       </ul>

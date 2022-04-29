@@ -1,9 +1,10 @@
 import Pagination from "../UI/paginator/Pagination";
 import User from "./User";
+import classes from "./users.module.scss";
 
 const Users = (props) => {
   return (
-    <div>
+    <div className={classes.users}>
       <Pagination
         totalItemCount={props.totalUsersCount}
         pageSize={props.pageSize}

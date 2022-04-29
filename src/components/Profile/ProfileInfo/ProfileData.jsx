@@ -1,5 +1,6 @@
 import React from "react";
-import ProfileContacts from "./ProfileContacts";
+import Button from "../../UI/button/Button";
+import classes from "./profileInfo.module.scss";
 
 function ProfileData({ profile, owner, editModeHandler }) {
   const activateEditMode = () => {
@@ -7,37 +8,21 @@ function ProfileData({ profile, owner, editModeHandler }) {
   };
   return (
     <div>
-      {owner && (
-        <div>
-          <button onClick={activateEditMode}>Edit</button>
-        </div>
-      )}
-      <div>
+      <div className={classes.profile__data__item}>
         <b>Full Name: {profile.fullName}</b>
       </div>
-      <div>
+      <div className={classes.profile__data__item}>
         <b>Looking for a job: {profile.lookingForAJob ? "Yes" : "No"}</b>
       </div>
-      <div>
+      <div className={classes.profile__data__item}>
         <b>About me: {profile.aboutMe}</b>
       </div>
-      <div>
+      <div className={classes.profile__data__item}>
         {profile.lookingForAJob && (
           <b>Skills: {profile.lookingForAJobDescription}</b>
         )}
       </div>
-      {/* <div>
-        <b>Contacts</b>:
-        {Object.keys(profile.contacts).map((key) => {
-          return (
-            <ProfileContacts
-              key={key}
-              contactTitle={key}
-              contactValue={profile.contacts[key]}
-            />
-          );
-        })}
-      </div> */}
+      {owner && <Button onClick={activateEditMode}>Edit</Button>}
     </div>
   );
 }

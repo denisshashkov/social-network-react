@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Button from "../button/Button";
 import classes from "./pagination.module.scss";
 
 function Pagination({
@@ -6,7 +7,7 @@ function Pagination({
   pageSize,
   currentPage,
   changePageHandler,
-  portionSize = 8,
+  portionSize = 5,
 }) {
   const pagesCount = Math.ceil(totalItemCount / pageSize);
   const pages = [];
@@ -28,10 +29,12 @@ function Pagination({
   };
 
   return (
-    <div>
-      {portionNumber > 1 && (
-        <button onClick={toPrevPortionHandler}>Prev</button>
-      )}
+    <div className={classes.pagination}>
+      <div className={classes.pagination__button}>
+        {portionNumber > 1 && (
+          <Button onClick={toPrevPortionHandler}>Prev</Button>
+        )}
+      </div>
 
       {pages
         .filter(
@@ -39,22 +42,26 @@ function Pagination({
             page >= leftBorderOfPageNumber && page <= rightBorderOfPageNumber
         )
         .map((page) => (
-          <span
-            key={page}
-            className={
-              currentPage === page ? classes.selectedPage : classes.pageNumber
-            }
-            onClick={(e) => {
-              changePageHandler(page);
-            }}
-          >
-            {page}
-          </span>
+          <div className={classes.pagination__block}>
+            <span
+              key={page}
+              className={
+                currentPage === page ? classes.selectedPage : classes.pageNumber
+              }
+              onClick={(e) => {
+                changePageHandler(page);
+              }}
+            >
+              {page}
+            </span>
+          </div>
         ))}
 
-      {portionCount > portionNumber && (
-        <button onClick={toNextPortionHandler}>Next</button>
-      )}
+      <div className={classes.pagination__button}>
+        {portionCount > portionNumber && (
+          <Button onClick={toNextPortionHandler}>Next</Button>
+        )}
+      </div>
     </div>
   );
 }

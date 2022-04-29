@@ -21,11 +21,11 @@ const Dialogs = (props) => {
 
   return (
     <div className={classes.dialogs}>
-      <div className={classes.dialogs__items}>{items}</div>
-      <div className={classes.dialogs__messages}>
-        <div>{messages}</div>
-        <AddMessageForm submitHandler={sendMessageHandler} />
+      <div className={classes.dialogs__block}>
+        <div className={classes.dialogs__items}>{items}</div>
+        <div className={classes.dialogs__messages}>{messages}</div>
       </div>
+      <AddMessageForm submitHandler={sendMessageHandler} />
     </div>
   );
 };

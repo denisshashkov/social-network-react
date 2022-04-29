@@ -1,6 +1,7 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import Button from "../UI/button/Button";
 import classes from "./formStyles.module.scss";
 
 const validationsSchema = Yup.object().shape({
@@ -29,7 +30,7 @@ const AddPostForm = ({ submitHandler }) => {
               <p className={classes.error}>{errors.post}</p>
             ) : null}
             <div>
-              <button type="submit">Add post</button>
+              <Button type="submit">Add post</Button>
             </div>
           </Form>
         )}

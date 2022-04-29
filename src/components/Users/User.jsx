@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import userPhoto from "../../assets/image/user.png";
+import Button from "../UI/button/Button";
 import classes from "./users.module.scss";
 
 function User({
@@ -22,32 +23,36 @@ function User({
       </div>
       <div>
         {user.followed ? (
-          <button
+          <Button
             disabled={followingProgress.includes(user.id)}
             onClick={() => {
               unFollowThunkCreator(user);
             }}
           >
             Unfollow
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
             disabled={followingProgress.includes(user.id)}
             onClick={() => {
               followThunkCreator(user);
             }}
           >
             Follow
-          </button>
+          </Button>
         )}
       </div>
       <div>
-        <h3>{user.name}</h3>
-        <span>{user.status}</span>
+        <b>{user.name}</b>
+        <b>{user.status}</b>
       </div>
       <div>
-        <span>{"user.location.country"}</span>
-        <span>{"user.location.city"}</span>
+        <div>
+          <span>{"user.location.country"}</span>
+        </div>
+        <div>
+          <span>{"user.location.city"}</span>
+        </div>
       </div>
     </div>
   );

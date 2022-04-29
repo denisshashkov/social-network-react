@@ -1,6 +1,7 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import Button from "../UI/button/Button";
 import classes from "./formStyles.module.scss";
 
 const ProfileDataForm = ({ submitHandler, profile }) => {
@@ -29,7 +30,7 @@ const ProfileDataForm = ({ submitHandler, profile }) => {
         {({ errors, touched, status }) => (
           <Form>
             <label>Full Name</label>
-            <div>
+            <div className={classes.input__wrapper}>
               <Field
                 name={"fullName"}
                 className={
@@ -42,11 +43,14 @@ const ProfileDataForm = ({ submitHandler, profile }) => {
             {errors.fullName && touched.fullName ? (
               <p className={classes.error}>{errors.fullName}</p>
             ) : null}
-            <div>
-              <Field type={"checkbox"} name={"lookingForAJob"} />
+            <div className={classes.checkbox__wrapper}>
+              <Field
+                type={"checkbox"}
+                name={"lookingForAJob"}
+                className={classes.checkbox}
+              />
               Looking for a job
             </div>
-
             <label>About me</label>
             <div>
               <Field
@@ -62,7 +66,6 @@ const ProfileDataForm = ({ submitHandler, profile }) => {
             {errors.aboutMe && touched.aboutMe ? (
               <p className={classes.error}>{errors.aboutMe}</p>
             ) : null}
-
             <label>Skills</label>
             <div>
               <Field
@@ -82,36 +85,9 @@ const ProfileDataForm = ({ submitHandler, profile }) => {
                 {errors.lookingForAJobDescription}
               </p>
             ) : null}
-
-            {/* <label>Contacts</label>
-
-            <div>
-              {Object.keys(profile.contacts).map((key) => {
-                return (
-                  <div key={key}>
-                    <b>{key}: </b>
-                    <div>
-                      <Field
-                       
-                        onChange={contactHandler}
-                        placeholder={key}
-                        name={`contacts.${key}`}
-                        className={
-                          errors.contacts && touched.contacts
-                            ? classes.error__border
-                            : null
-                        }
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div> */}
-
             {status ? <p className={classes.error}>{status.error}</p> : null}
-
             <div>
-              <button type="submit">Save</button>
+              <Button type="submit">Save</Button>
             </div>
           </Form>
         )}

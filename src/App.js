@@ -41,21 +41,23 @@ const App = () => {
     return <ErrorComponent />;
   }
   return (
-    <div className="app__wrapper">
+    <div>
       <HeaderContainer />
-      <Navbar />
-      <div className="app__wrapper__content">
-        <Suspense fallback={<Preloader />}>
-          <Routes>
-            <Route path="/profile/*" element={<ProfileContainer />} />
-            <Route path="/users" element={<UsersContainer />} />
-            <Route path="/dialogs" element={<DialogsContainer />} />
-            <Route path="/news" element={<News />} />
-            <Route path="/music" element={<Music />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </Suspense>
+      <div className="app__wrapper">
+        <Navbar />
+        <div className="app__wrapper__content">
+          <Suspense fallback={<Preloader />}>
+            <Routes>
+              <Route path="/profile/*" element={<ProfileContainer />} />
+              <Route path="/users" element={<UsersContainer />} />
+              <Route path="/dialogs" element={<DialogsContainer />} />
+              <Route path="/news" element={<News />} />
+              <Route path="/music" element={<Music />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </Suspense>
+        </div>
       </div>
     </div>
   );
