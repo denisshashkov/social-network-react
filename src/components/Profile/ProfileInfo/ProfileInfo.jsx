@@ -33,25 +33,37 @@ const ProfileInfo = ({
     return <PreLoader />;
   }
   return (
-    <div>
+    <div className={classes.info__wrapper}>
       <div className={classes.profile__info}>
         <img
           className={classes.profile__info__photo}
           src={profile.photos.large || avatar}
           alt="No Avatar"
         />
-        {owner && <input type={"file"} onChange={choiseAvatarHandler} />}
+        {owner && (
+          <label htmlFor="input__file" className={classes.input__file__label}>
+            <input
+              type={"file"}
+              id="input__file"
+              className={classes.input__file}
+              onChange={choiseAvatarHandler}
+            />
+            Upload image
+          </label>
+        )}
       </div>
-      <ProfileStatus status={status} updateStatus={updateStatus} />
-      {editMode ? (
-        <ProfileDataForm profile={profile} submitHandler={submitHandler} />
-      ) : (
-        <ProfileData
-          profile={profile}
-          owner={owner}
-          editModeHandler={editModeHandler}
-        />
-      )}
+      <div className={classes.profile__data}>
+        <ProfileStatus status={status} updateStatus={updateStatus} />
+        {editMode ? (
+          <ProfileDataForm profile={profile} submitHandler={submitHandler} />
+        ) : (
+          <ProfileData
+            profile={profile}
+            owner={owner}
+            editModeHandler={editModeHandler}
+          />
+        )}
+      </div>
     </div>
   );
 };

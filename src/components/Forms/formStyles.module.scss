@@ -6,3 +6,44 @@
     border: solid 2px red;
   }
 }
+
+textarea {
+  width: 14.125rem;
+  height: 7.0625rem;
+  border: 1px solid;
+  padding: 0.625rem 1.25rem;
+  outline: 0;
+  border-radius: 5px;
+  background-color: #fff;
+  resize: vertical;
+  margin-bottom: 8px;
+}
+
+input {
+  width: 14.125rem;
+  padding: 0.225rem 1.25rem;
+  border-radius: 5px;
+  border: 1px solid;
+  height: 1.5rem;
+}
+
+.checkbox {
+  width: auto;
+  margin-right: 10px;
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+}
+
+.input__wrapper {
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 760px) {
+  textarea,
+  input {
+    width: 13.125rem;
+  }
+}

@@ -1,22 +1,21 @@
+.info__wrapper {
+  display: flex;
+  justify-content: space-around;
+}
+
 .profile__info {
-  //display: grid;
-  grid-auto-flow: column;
-  //position: absolute;
-  padding: 0 20px;
-  z-index: 999;
-  top: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   &__description {
-    //display: grid;
-    //text-align: center;
     & h3 {
       color: white;
       font-family: "Lobster";
       font-size: 28px;
       margin: 0;
-      //align-self: end;
     }
     & p {
-      //align-self: start;
       color: white;
       margin: 0;
     }
@@ -25,7 +24,54 @@
     height: 200px;
     width: 200px;
     border-radius: 50%;
-    border: 10px solid #fff;
-    margin-right: 20px;
+    margin-bottom: 15px;
+  }
+}
+
+.input__file {
+  display: none;
+  &__label {
+    background-color: #5181b8;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    color: white;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    &:hover {
+      cursor: pointer;
+      background-color: #7291b8;
+      transition: 0.3s;
+      -webkit-transition: 0.3s;
+      -moz-transition: 0.3s;
+      -ms-transition: 0.3s;
+      -o-transition: 0.3s;
+    }
+  }
+}
+
+.profile__data {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  &__item {
+    margin-bottom: 5px;
+  }
+}
+
+@media screen and (max-width: 760px) {
+  .info__wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .profile__info__photo {
+    width: 100px;
+    height: 100px;
+  }
+  .input__file__label {
+    margin-bottom: 10px;
   }
 }

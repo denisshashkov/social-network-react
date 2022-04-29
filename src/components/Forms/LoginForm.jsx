@@ -1,6 +1,7 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import Button from "../UI/button/Button";
 import classes from "./formStyles.module.scss";
 
 const LoginForm = ({ submitHandler, captcha }) => {
@@ -23,7 +24,8 @@ const LoginForm = ({ submitHandler, captcha }) => {
       >
         {({ errors, touched, status }) => (
           <Form>
-            <div>
+            <label htmlFor="email">Email</label>
+            <div className={classes.input__wrapper}>
               <Field
                 placeholder={"Email"}
                 name={"email"}
@@ -35,7 +37,8 @@ const LoginForm = ({ submitHandler, captcha }) => {
             {errors.email && touched.email ? (
               <p className={classes.error}>{errors.email}</p>
             ) : null}
-            <div>
+            <label htmlFor="password">Password</label>
+            <div className={classes.input__wrapper}>
               <Field
                 placeholder={"Password"}
                 type={"password"}
@@ -50,8 +53,12 @@ const LoginForm = ({ submitHandler, captcha }) => {
             {errors.password && touched.password ? (
               <p className={classes.error}>{errors.password}</p>
             ) : null}
-            <div>
-              <Field type={"checkbox"} name={"rememberMe"} />
+            <div className={classes.checkbox__wrapper}>
+              <Field
+                type={"checkbox"}
+                name={"rememberMe"}
+                className={classes.checkbox}
+              />
               Remember me
             </div>
 
@@ -73,7 +80,7 @@ const LoginForm = ({ submitHandler, captcha }) => {
             {status ? <p className={classes.error}>{status.error}</p> : null}
 
             <div>
-              <button type="submit">Submit</button>
+              <Button type="submit">Submit</Button>
             </div>
           </Form>
         )}

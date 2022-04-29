@@ -17,7 +17,7 @@ const Myposts = (props) => {
   return (
     <div className={classes.posts}>
       <AddPostForm submitHandler={addPostHandler} />
-      <div className={classes.posts}>{items}</div>
+      <div className={classes.posts__items}>{items}</div>
     </div>
   );
 };

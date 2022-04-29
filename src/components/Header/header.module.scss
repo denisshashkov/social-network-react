@@ -1,32 +1,39 @@
 .header {
   grid-area: header;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
   padding: 10px;
-  display: grid;
-  grid-auto-flow: column;
+  display: flex;
+  justify-content: space-around;
   align-items: center;
-
-  text-align: center;
-
-  background-color: #231f20;
-  &__logo {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 20px;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -ms-border-radius: 50%;
-    -o-border-radius: 50%;
-  }
+  background-color: white;
+  box-shadow: 0 4px 4px -2px black;
   &__title {
-    color: white;
+    color: black;
     margin: 0;
     font-family: "Lobster", cursive;
   }
-  &__login {
+  &__right {
     width: fit-content;
   }
-  &__login h3 {
-    color: white;
+  &__login {
+    display: flex;
+    & b {
+      color: black;
+      margin-right: 15px;
+    }
+    & button {
+      width: fit-content;
+    }
+  }
+  &__link {
+    text-decoration: none;
+  }
+}
+
+@media screen and (max-width: 760px) {
+  .header__title {
+    font-size: 18px;
   }
 }
