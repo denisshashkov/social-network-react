@@ -1,11 +1,11 @@
 import { applyMiddleware, combineReducers, createStore, compose } from "redux";
-import profileReducer from "./profileReducer";
-import messagesReducer from "./messagesReducer";
-import navBarReducer from "./navBarReducer";
-import usersReducer from "./usersReducer";
-import authReducer from "./authReducer";
+import profileReducer from "./profileReducer.ts";
+import messagesReducer from "./messagesReducer.ts";
+import navBarReducer from "./navBarReducer.ts";
+import usersReducer from "./usersReducer.ts";
+import authReducer from "./authReducer.ts";
 import thunkMiddleWare from "redux-thunk";
-import appReducer from "./appReducer";
+import appReducer from "./appReducer.ts";
 
 const reducers = combineReducers({
   profilePage: profileReducer,
@@ -16,6 +16,9 @@ const reducers = combineReducers({
   app: appReducer,
 });
 
+type Reducers = typeof reducers;
+export type AppStateType = ReturnType<Reducers>;
+//@ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   reducers,

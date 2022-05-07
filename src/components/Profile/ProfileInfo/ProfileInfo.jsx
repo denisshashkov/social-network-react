@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import PreLoader from "../../UI/preloader/PreLoader";
+import PreLoader from "../../common/preloader/PreLoader";
 import ProfileStatus from "./ProfileStatus";
 import avatar from "../../../assets/image/user.png";
 import classes from "./profileInfo.module.scss";

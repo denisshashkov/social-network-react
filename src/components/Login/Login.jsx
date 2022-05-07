@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import React from "react";
 import LoginForm from "../Forms/LoginForm";
-import { setLoginThunkCreator } from "../../redux/authReducer";
+import { setLoginThunkCreator } from "../../redux/authReducer.ts";
 import { Navigate } from "react-router-dom";
 import classes from "./login.module.scss";
 

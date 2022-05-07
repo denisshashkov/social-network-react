@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import React from "react";
 import Header from "./Header";
-import { setLogoutThunkCreator } from "../../redux/authReducer";
+import { setLogoutThunkCreator } from "../../redux/authReducer.ts";
 import { getIsAuth, getLogin } from "../../redux/authSelectors";
 import { useSelector } from "react-redux";
 

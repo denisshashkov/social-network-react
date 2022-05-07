@@ -15,7 +15,7 @@ import {
   updateProfileStatusThunkCreator,
   savePhotoThunkCreator,
   saveDataThunkCreator,
-} from "../../redux/profileReducer";
+} from "../../redux/profileReducer.ts";
 
 const ProfileContainer = () => {
   const dispatch = useDispatch();
