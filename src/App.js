@@ -3,20 +3,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Navbar from "./components/Navbar/Navbar";
-import Preloader from "./components/UI/preloader/PreLoader";
-import ErrorComponent from "./components/UI/errors/ErrorComponent";
+import Preloader from "./components/common/preloader/PreLoader";
+import ErrorComponent from "./components/common/errors/ErrorComponent";
 import { getGlobalError } from "./redux/appSelectors";
 import {
   initializeSuccessThunkCreator,
   globalErrorThunkCreator,
-} from "./redux/appReducer";
+} from "./redux/appReducer.ts";
 const DialogsContainer = lazy(() =>
   import("./components/Dialogs/DialogsContainer")
 );
 const ProfileContainer = lazy(() =>
   import("./components/Profile/ProfileContainer")
 );
-const UsersContainer = lazy(() => import("./components/Users/UsersContainer"));
+const UsersContainer = lazy(() =>
+  import("./components/Users/UsersContainer.tsx")
+);
 const News = lazy(() => import("./components/News/News"));
 const Music = lazy(() => import("./components/Music/Music"));
 const Settings = lazy(() => import("./components/Settings/Settings"));

@@ -1,14 +1,22 @@
 import React, { useState } from "react";
-import Button from "../button/Button";
+import Button from "../../UI/button/Button";
 import classes from "./pagination.module.scss";
 
-function Pagination({
+type PropsType = {
+  totalItemCount: number;
+  pageSize: number;
+  currentPage: number;
+  changePageHandler: (pageNumber: number) => void;
+  portionSize?: number;
+};
+
+const Pagination: React.FC<PropsType> = ({
   totalItemCount,
   pageSize,
   currentPage,
   changePageHandler,
   portionSize = 5,
-}) {
+}) => {
   const pagesCount = Math.ceil(totalItemCount / pageSize);
   const pages = [];
   for (let i = 1; i <= pagesCount; i++) {
@@ -42,9 +50,8 @@ function Pagination({
             page >= leftBorderOfPageNumber && page <= rightBorderOfPageNumber
         )
         .map((page) => (
-          <div className={classes.pagination__block}>
+          <div key={page} className={classes.pagination__block}>
             <span
-              key={page}
               className={
                 currentPage === page ? classes.selectedPage : classes.pageNumber
               }
@@ -64,6 +71,6 @@ function Pagination({
       </div>
     </div>
   );
-}
+};
 
 export default Pagination;

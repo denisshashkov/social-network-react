@@ -4,16 +4,17 @@ const SET_LOGIN = "SET_LOGIN";
 const GET_CAPTCHA = "GET_CAPTCHA";
 
 const initialState = {
-  id: null,
-  email: null,
-  login: null,
-  password: "",
+  id: null as number | null,
+  email: null as string | null,
+  login: null as string | null,
   rememberMe: false,
   isAuth: false,
-  captcha: null,
+  captcha: null as string | null,
 };
 
-const authReducer = (state = initialState, action) => {
+export type InitialStateType = typeof initialState;
+
+const authReducer = (state = initialState, action: any): InitialStateType => {
   switch (action.type) {
     case SET_USER_DATA:
       return {
@@ -24,7 +25,6 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         login: action.login,
-        password: action.password,
         rememberMe: action.rememberMe,
       };
     case GET_CAPTCHA:
@@ -38,28 +38,64 @@ const authReducer = (state = initialState, action) => {
   }
 };
 
-export const setAuthUserData = (id, email, login, isAuth) => ({
+type DataAuthUserType = {
+  id: number | null;
+  email: string | null;
+  login: string | null;
+  isAuth: boolean;
+};
+
+type SetAuthUserDataType = {
+  type: typeof SET_USER_DATA;
+  data: DataAuthUserType;
+};
+
+export const setAuthUserData = (
+  id: number | null,
+  email: string | null,
+  login: string | null,
+  isAuth: boolean
+): SetAuthUserDataType => ({
   type: SET_USER_DATA,
   data: { id, email, login, isAuth },
 });
 
-export const getCaptchaActionCreator = (captcha) => ({
+type GetCaptchaActionType = {
+  type: typeof GET_CAPTCHA;
+  payLoad: { captcha: string };
+};
+
+export const getCaptchaActionCreator = (
+  captcha: string
+): GetCaptchaActionType => ({
   type: GET_CAPTCHA,
   payLoad: { captcha },
 });
 
+type DataLoginType = {
+  login: string;
+  password: string;
+  captcha: string;
+  rememberMe: boolean;
+};
+
+type SetLoginActionType = {
+  type: typeof SET_LOGIN;
+  data: DataLoginType;
+};
+
 export const setLoginActionCreator = (
-  login,
-  password,
-  captcha,
-  rememberMe
-) => ({
+  login: string,
+  password: string,
+  captcha: string,
+  rememberMe: boolean
+): SetLoginActionType => ({
   type: SET_LOGIN,
   data: { login, password, captcha, rememberMe },
 });
 
 export const getDataThunkCreator = () => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     let data = await authAPI.getUserData();
     if (data.resultCode === 0) {
       let { id, email, login } = data.data;
@@ -69,13 +105,13 @@ export const getDataThunkCreator = () => {
 };
 
 export const setLoginThunkCreator = (
-  email,
-  password,
-  rememberMe,
-  setStatus,
-  captcha
+  email: string,
+  password: string,
+  rememberMe: boolean,
+  setStatus: any,
+  captcha: string
 ) => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     let data = await authAPI.setLogin(email, password, rememberMe, captcha);
     if (data.resultCode === 0) {
       dispatch(getDataThunkCreator());
@@ -91,7 +127,7 @@ export const setLoginThunkCreator = (
 };
 
 export const setLogoutThunkCreator = () => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     let data = await authAPI.setLogout();
     if (data.resultCode === 0) {
       dispatch(setAuthUserData(null, null, null, false));
@@ -100,7 +136,7 @@ export const setLogoutThunkCreator = () => {
 };
 
 export const getCaptchaThunkCreator = () => {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     let data = await securityAPI.getCaptcha();
     const captcha = data.url;
     dispatch(getCaptchaActionCreator(captcha));
