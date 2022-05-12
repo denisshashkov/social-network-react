@@ -2,19 +2,25 @@ import React from "react";
 import AddMessageForm from "../Forms/AddMessageForm";
 import DialogItem from "./DialogItem/DialogItem";
 import DialogMessage from "./DialogMessage/DialogMessage";
+import { messagesPageType } from "../../types/types";
 import classes from "./dialogs.module.scss";
 
-const Dialogs = (props) => {
+type PropsType = {
+  messagesPage: messagesPageType;
+  sendMessage: (message: string) => void;
+};
+
+const Dialogs: React.FC<PropsType> = (props) => {
   let state = props.messagesPage;
-  const items = state.dialogsData.map((dialog) => (
-    <DialogItem name={dialog.name} key={dialog.id} />
+  const items = state.dialogsData.map((item) => (
+    <DialogItem name={item.name} key={item.id} id={item.id} />
   ));
 
   const messages = state.messages.map((message) => (
     <DialogMessage text={message.message} key={message.id} />
   ));
 
-  const sendMessageHandler = (message, submitProps) => {
+  const sendMessageHandler = (message: string, submitProps: any) => {
     props.sendMessage(message);
     submitProps.resetForm();
   };

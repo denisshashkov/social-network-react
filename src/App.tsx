@@ -9,16 +9,14 @@ import { getGlobalError } from "./redux/appSelectors";
 import {
   initializeSuccessThunkCreator,
   globalErrorThunkCreator,
-} from "./redux/appReducer.ts";
-const DialogsContainer = lazy(() =>
-  import("./components/Dialogs/DialogsContainer")
+} from "./redux/appReducer";
+const DialogsContainer = lazy(
+  () => import("./components/Dialogs/DialogsContainer")
 );
-const ProfileContainer = lazy(() =>
-  import("./components/Profile/ProfileContainer")
+const ProfileContainer = lazy(
+  () => import("./components/Profile/ProfileContainer")
 );
-const UsersContainer = lazy(() =>
-  import("./components/Users/UsersContainer.tsx")
-);
+const UsersContainer = lazy(() => import("./components/Users/UsersContainer"));
 const News = lazy(() => import("./components/News/News"));
 const Music = lazy(() => import("./components/Music/Music"));
 const Settings = lazy(() => import("./components/Settings/Settings"));

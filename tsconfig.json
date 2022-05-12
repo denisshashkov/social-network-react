@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "target": "es5",
+    "allowJs": true,
+    // fix problems for "imports something from 'something'"
+    "esModuleInterop": true,
+    // for "imports something from 'something'"
+    "allowSyntheticDefaultImports": true,
+    "module": "commonjs",
+    //Controls how JSX constructs are emitted in JavaScript files.
+    "jsx": "react-jsx"
+  },
+  "include": ["src", "./src/declaration.d.ts"]
+}

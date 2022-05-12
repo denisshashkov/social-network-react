@@ -1,4 +1,4 @@
-import Pagination from "../common/paginator/Pagination.tsx";
+import Pagination from "../common/paginator/Pagination";
 import User from "./User";
 import { UsersType } from "../../types/types";
 import classes from "./users.module.scss";
@@ -10,8 +10,8 @@ type PropsType = {
   users: Array<UsersType>;
   followingProgress: Array<number>;
   changePageHandler: (pageNumber: number) => void;
-  followThunkCreator: (userId: number) => void;
-  unFollowThunkCreator: (userId: number) => void;
+  followThunkCreator: (user: UsersType) => void;
+  unFollowThunkCreator: (user: UsersType) => void;
 };
 
 const Users: React.FC<PropsType> = (props) => {

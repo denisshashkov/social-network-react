@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import classes from "./profileStatus.module.scss";
 
-const ProfileStatus = (props) => {
+type PropsType = {
+  status: string;
+  updateStatus: (newStatus: string) => void;
+};
+
+const ProfileStatus: React.FC<PropsType> = (props) => {
   const [editMode, setEditMode] = useState(false);
   const [status, setStatus] = useState(props.status);
   const dispatch = useDispatch();
@@ -19,7 +24,7 @@ const ProfileStatus = (props) => {
     dispatch(props.updateStatus(status));
   };
 
-  const statusChangeHandler = (e) => {
+  const statusChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     let statusValue = e.target.value;
     setStatus(statusValue);
   };
