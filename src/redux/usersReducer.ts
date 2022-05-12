@@ -1,6 +1,9 @@
-import { userAPI, followAPI } from "../api/api";
+import { userAPI, followAPI, ResultCodesEnum } from "../api/api";
 import { updateObjectInArray } from "../utils/helpers";
 import { UsersType } from "../types/types";
+import { ThunkAction } from "redux-thunk";
+import { AppStateType } from "./redux-store";
+import { Dispatch } from "redux";
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
 const GET_USERS = "GET_USERS";
@@ -20,7 +23,10 @@ const initialState = {
 
 export type InitialStateType = typeof initialState;
 
-const usersReducer = (state = initialState, action: any): InitialStateType => {
+const usersReducer = (
+  state = initialState,
+  action: ActionsTypes
+): InitialStateType => {
   switch (action.type) {
     case FOLLOW:
       return {
@@ -56,6 +62,15 @@ const usersReducer = (state = initialState, action: any): InitialStateType => {
       return state;
   }
 };
+
+type ActionsTypes =
+  | FollowActionType
+  | UnFollowActionType
+  | GetUsersActionType
+  | GetCurrentPageActionType
+  | GetUsersCountActionType
+  | ToggleIsFetchingActionType
+  | DisabledButtonActionType;
 
 type FollowActionType = {
   type: typeof FOLLOW;
@@ -134,8 +149,20 @@ export const disabledButton = (
   userId,
 });
 
-export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
-  return async (dispatch: any) => {
+type ThunkTypes = ThunkAction<
+  Promise<void>,
+  AppStateType,
+  unknown,
+  ActionsTypes
+>;
+
+export type DispatchType = Dispatch<ActionsTypes>;
+
+export const getUsersThunkCreator = (
+  currentPage: number,
+  pageSize: number
+): ThunkTypes => {
+  return async (dispatch) => {
     dispatch(getCurrentPage(currentPage));
     dispatch(toggleIsFetching(true));
     let data = await userAPI.setUsers(currentPage, pageSize);
@@ -145,31 +172,31 @@ export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
   };
 };
 
-const followUnfollow = async (
-  dispatch: any,
+const _followUnfollow = async (
+  dispatch: DispatchType,
   user: UsersType,
   apiMethod: any,
-  actionCreator: any
+  actionCreator: (userId: number) => FollowActionType | UnFollowActionType
 ) => {
   dispatch(disabledButton(true, user.id));
   let data = await apiMethod(user);
-  if (data.resultCode === 0) {
+  if (data.resultCode === ResultCodesEnum.Success) {
     dispatch(actionCreator(user.id));
   }
   dispatch(disabledButton(false, user.id));
 };
 
-export const unFollowThunkCreator = (user: UsersType) => {
-  return async (dispatch: any) => {
+export const unFollowThunkCreator = (user: UsersType): ThunkTypes => {
+  return async (dispatch) => {
     let apiMethod = followAPI.unFollowUser.bind(userAPI);
-    followUnfollow(dispatch, user, apiMethod, unFollow);
+    _followUnfollow(dispatch, user, apiMethod, unFollow);
   };
 };
 
-export const followThunkCreator = (user: UsersType) => {
-  return async (dispatch: any) => {
+export const followThunkCreator = (user: UsersType): ThunkTypes => {
+  return async (dispatch) => {
     let apiMethod = followAPI.followUser.bind(userAPI);
-    followUnfollow(dispatch, user, apiMethod, follow);
+    _followUnfollow(dispatch, user, apiMethod, follow);
   };
 };
 

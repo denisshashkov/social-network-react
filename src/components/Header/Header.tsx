@@ -4,7 +4,13 @@ import { NavLink } from "react-router-dom";
 import Button from "../UI/button/Button";
 import classes from "./header.module.scss";
 
-const Header = (props) => {
+type PropsType = {
+  isAuth: boolean;
+  login: string;
+  logOut: () => void;
+};
+
+const Header: React.FC<PropsType> = (props) => {
   const dispatch = useDispatch();
   const logoutHandler = () => {
     dispatch(props.logOut());

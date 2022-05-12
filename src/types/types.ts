@@ -34,3 +34,18 @@ export type UsersType = {
   photos: PhotosType;
   followed: boolean;
 };
+
+export type DialogsDataType = {
+  id: number;
+  name: string;
+};
+
+export type MessagesType = {
+  id: number;
+  message: string;
+};
+
+export type messagesPageType = {
+  dialogsData: Array<DialogsDataType>;
+  messages: Array<MessagesType>;
+};

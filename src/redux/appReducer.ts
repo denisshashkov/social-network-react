@@ -1,4 +1,6 @@
-import { getDataThunkCreator } from "./authReducer.ts";
+import { ThunkAction } from "redux-thunk";
+import { getDataThunkCreator } from "./authReducer";
+import { AppStateType } from "./redux-store";
 
 const INITIALIZED_SUCCESS = "INITIALIZED_SUCCESS";
 const GLOBAL_ERROR = "GLOBAL_ERROR";
@@ -30,6 +32,8 @@ const appReducer = (state = initialState, action: any): InitialStateType => {
   }
 };
 
+type ActionsTypes = InitializeSuccessActionType | ErrorActionType;
+
 type InitializeSuccessActionType = {
   type: typeof INITIALIZED_SUCCESS;
 };
@@ -54,19 +58,32 @@ export const hideErrorActionCreator = (): ErrorActionType => ({
   globalError: false,
 });
 
-export const initializeSuccessThunkCreator = () => (dispatch: any) => {
-  let promise = dispatch(getDataThunkCreator());
-  Promise.all([promise]).then(() => dispatch(initializeSuccessActionCreator()));
+type ThunkTypes = ThunkAction<
+  Promise<void>,
+  AppStateType,
+  unknown,
+  ActionsTypes
+>;
+
+export const initializeSuccessThunkCreator = (): ThunkTypes => {
+  return async (dispatch) => {
+    let promise = dispatch(getDataThunkCreator());
+    Promise.all([promise]).then(() =>
+      dispatch(initializeSuccessActionCreator())
+    );
+  };
 };
 
-export const globalErrorThunkCreator = (error: any) => (dispatch: any) => {
-  let statusCode = error.reason.response.status;
-  if (statusCode >= 400) {
-    dispatch(showErrorActionCreator());
-    setTimeout(() => {
-      dispatch(hideErrorActionCreator());
-    }, 3000);
-  }
+export const globalErrorThunkCreator = (error: any): ThunkTypes => {
+  return async (dispatch) => {
+    let statusCode = error.reason.response.status;
+    if (statusCode >= 400) {
+      dispatch(showErrorActionCreator());
+      setTimeout(() => {
+        dispatch(hideErrorActionCreator());
+      }, 3000);
+    }
+  };
 };
 
 export default appReducer;

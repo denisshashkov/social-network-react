@@ -8,18 +8,18 @@ export const getPageSize = (state: AppStateType) => {
   return state.usersPage.pageSize;
 };
 
-export const getFollowingProgress = (state) => {
+export const getFollowingProgress = (state: AppStateType) => {
   return state.usersPage.followingProgress;
 };
 
-export const getIsFetching = (state) => {
+export const getIsFetching = (state: AppStateType) => {
   return state.usersPage.isFetching;
 };
 
-export const getTotalUserCount = (state) => {
+export const getTotalUserCount = (state: AppStateType) => {
   return state.usersPage.totalUsersCount;
 };
 
-export const getPage = (state) => {
+export const getPage = (state: AppStateType) => {
   return state.usersPage.currentPage;
 };
