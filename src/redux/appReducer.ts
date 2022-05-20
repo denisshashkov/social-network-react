@@ -1,62 +1,53 @@
+import { Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { getDataThunkCreator } from "./authReducer";
-import { AppStateType } from "./redux-store";
+import { AppStateType, InferActionsTypes } from "./redux-store";
 
 const INITIALIZED_SUCCESS = "INITIALIZED_SUCCESS";
-const GLOBAL_ERROR = "GLOBAL_ERROR";
+const SHOW_ERROR = "SHOW_ERROR";
 
-export type InitialStateType = {
-  initialized: Boolean;
-  globalError: Boolean;
-};
-
-const initialState: InitialStateType = {
+const initialState = {
   initialized: false,
   globalError: false,
 };
 
-const appReducer = (state = initialState, action: any): InitialStateType => {
+export type InitialStateType = typeof initialState;
+
+const appReducer = (
+  state = initialState,
+  action: ActionsTypes
+): InitialStateType => {
   switch (action.type) {
     case INITIALIZED_SUCCESS:
       return {
         ...state,
         initialized: true,
       };
-    case GLOBAL_ERROR:
+    case SHOW_ERROR:
       return {
         ...state,
         globalError: action.globalError,
       };
+
     default:
       return state;
   }
 };
 
-type ActionsTypes = InitializeSuccessActionType | ErrorActionType;
+type ActionsTypes = InferActionsTypes<typeof actions>;
 
-type InitializeSuccessActionType = {
-  type: typeof INITIALIZED_SUCCESS;
+export const actions = {
+  initializeSuccessActionCreator: () =>
+    ({
+      type: INITIALIZED_SUCCESS,
+    } as const),
+
+  showErrorActionCreator: (globalError: boolean) =>
+    ({
+      type: SHOW_ERROR,
+      globalError,
+    } as const),
 };
-
-export const initializeSuccessActionCreator =
-  (): InitializeSuccessActionType => ({
-    type: INITIALIZED_SUCCESS,
-  });
-
-type ErrorActionType = {
-  type: typeof GLOBAL_ERROR;
-  globalError: Boolean;
-};
-
-export const showErrorActionCreator = (): ErrorActionType => ({
-  type: GLOBAL_ERROR,
-  globalError: true,
-});
-
-export const hideErrorActionCreator = (): ErrorActionType => ({
-  type: GLOBAL_ERROR,
-  globalError: false,
-});
 
 type ThunkTypes = ThunkAction<
   Promise<void>,
@@ -65,11 +56,13 @@ type ThunkTypes = ThunkAction<
   ActionsTypes
 >;
 
+export type DispatchType = Dispatch<ActionsTypes>;
+
 export const initializeSuccessThunkCreator = (): ThunkTypes => {
   return async (dispatch) => {
     let promise = dispatch(getDataThunkCreator());
     Promise.all([promise]).then(() =>
-      dispatch(initializeSuccessActionCreator())
+      dispatch(actions.initializeSuccessActionCreator())
     );
   };
 };
@@ -78,9 +71,9 @@ export const globalErrorThunkCreator = (error: any): ThunkTypes => {
   return async (dispatch) => {
     let statusCode = error.reason.response.status;
     if (statusCode >= 400) {
-      dispatch(showErrorActionCreator());
+      dispatch(actions.showErrorActionCreator(true));
       setTimeout(() => {
-        dispatch(hideErrorActionCreator());
+        dispatch(actions.showErrorActionCreator(false));
       }, 3000);
     }
   };

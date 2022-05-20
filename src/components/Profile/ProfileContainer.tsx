@@ -15,7 +15,7 @@ import {
   updateProfileStatusThunkCreator,
   savePhotoThunkCreator,
   saveDataThunkCreator,
-} from "../../redux/profileReducer.ts";
+} from "../../redux/profileReducer";
 
 const ProfileContainer = () => {
   const dispatch = useDispatch();
@@ -28,8 +28,8 @@ const ProfileContainer = () => {
 
   useEffect(() => {
     if (isAuth || match) {
-      dispatch(getProfileThunkCreator(userId));
-      dispatch(getProfileStatusThunkCreator(userId));
+      dispatch(getProfileThunkCreator(userId as number));
+      dispatch(getProfileStatusThunkCreator(userId as number));
     }
   }, [userId]);
 

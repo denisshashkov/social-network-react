@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ProfileType } from "redux/profileReducer";
+import { ProfileType } from "../types/types";
 import { FormDataType, PhotosType, UsersType } from "types/types";
 
 const instance = axios.create({
@@ -24,22 +24,14 @@ export const userAPI = {
   },
 };
 
-type UpdateStatusResponseType = {
-  resultCode: ResultCodesEnum;
+export type ResponseType<D = {}, RC = ResultCodesEnum> = {
   messages: Array<string>;
-  data: { status: string };
+  data: D;
+  resultCode: RC;
 };
 
 type SavePhotoResponseType = {
-  resultCode: ResultCodesEnum;
-  messages: Array<string>;
-  data: { photos: PhotosType };
-};
-
-type SaveDataResponseType = {
-  resultCode: ResultCodesEnum;
-  messages: Array<string>;
-  data: ProfileType;
+  photos: PhotosType;
 };
 
 export const profileAPI = {
@@ -55,14 +47,16 @@ export const profileAPI = {
   },
   updateUserProfileStatus(status: string) {
     return instance
-      .put<UpdateStatusResponseType>(`profile/status`, { status: status })
+      .put<ResponseType>(`profile/status`, {
+        status: status,
+      })
       .then((response) => response.data);
   },
-  savePhoto(photo: any) {
+  savePhoto(photo: File) {
     const formData = new FormData();
     formData.append("image", photo);
     return instance
-      .put<SavePhotoResponseType>(`profile/photo`, formData, {
+      .put<ResponseType<SavePhotoResponseType>>(`profile/photo`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -71,7 +65,7 @@ export const profileAPI = {
   },
   saveData(formData: FormDataType) {
     return instance
-      .put<SaveDataResponseType>(`profile`, formData)
+      .put<ResponseType<ProfileType>>(`profile`, formData)
       .then((response) => response.data);
   },
 };
@@ -86,21 +80,19 @@ export enum ResultCodeForCaptcha {
 }
 
 type MeResponseType = {
-  data: { id: number; email: string; login: string };
-  resultCode: ResultCodesEnum;
-  messages: Array<string>;
+  id: number;
+  email: string;
+  login: string;
 };
 
 type LoginResponseType = {
-  data: { id: number };
-  resultCode: ResultCodesEnum | ResultCodeForCaptcha;
-  messages: Array<string>;
+  id: number;
 };
 
 export const authAPI = {
   getUserData() {
     return instance
-      .get<MeResponseType>(`auth/me`)
+      .get<ResponseType<MeResponseType>>(`auth/me`)
       .then((response) => response.data);
   },
   setLogin(
@@ -110,7 +102,9 @@ export const authAPI = {
     captcha: null | string = null
   ) {
     return instance
-      .post<LoginResponseType>(`auth/login`, {
+      .post<
+        ResponseType<LoginResponseType, ResultCodesEnum | ResultCodeForCaptcha>
+      >(`auth/login`, {
         email,
         password,
         rememberMe,
@@ -119,27 +113,19 @@ export const authAPI = {
       .then((response) => response.data);
   },
   setLogout() {
-    return instance
-      .delete<LoginResponseType>(`auth/login`)
-      .then((response) => response.data);
+    return instance.delete(`auth/login`).then((response) => response.data);
   },
 };
 
-type FollowUnFollowResponseType = {
-  resultCode: ResultCodesEnum;
-  messages: Array<string>;
-  data: { id: number };
-};
-
-export const followAPI = {
-  unFollowUser(user: UsersType) {
+export const followUnfollowAPI = {
+  unFollowUser(userId: number) {
     return instance
-      .delete<FollowUnFollowResponseType>(`follow/${user.id}`)
+      .delete<ResponseType>(`follow/${userId}`)
       .then((response) => response.data);
   },
-  followUser(user: UsersType) {
+  followUser(userId: number) {
     return instance
-      .post<FollowUnFollowResponseType>(`follow/${user.id}`, {})
+      .post<ResponseType>(`follow/${userId}`, {})
       .then((response) => response.data);
   },
 };

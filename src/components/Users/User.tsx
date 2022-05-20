@@ -1,15 +1,22 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
 import userPhoto from "../../assets/image/user.png";
 import Button from "../UI/button/Button";
 import classes from "./users.module.scss";
+import { UsersType } from "types/types";
 
-function User({
+type PropsType = {
+  user: UsersType;
+  followingProgress: Array<number>;
+  followThunkCreator: (userId: number) => void;
+  unFollowThunkCreator: (userId: number) => void;
+};
+
+const User: React.FC<PropsType> = ({
   user,
   followThunkCreator,
   followingProgress,
   unFollowThunkCreator,
-}) {
+}) => {
   return (
     <div>
       <div>
@@ -26,7 +33,7 @@ function User({
           <Button
             disabled={followingProgress.includes(user.id)}
             onClick={() => {
-              unFollowThunkCreator(user);
+              unFollowThunkCreator(user.id);
             }}
           >
             Unfollow
@@ -35,7 +42,7 @@ function User({
           <Button
             disabled={followingProgress.includes(user.id)}
             onClick={() => {
-              followThunkCreator(user);
+              followThunkCreator(user.id);
             }}
           >
             Follow
@@ -56,6 +63,6 @@ function User({
       </div>
     </div>
   );
-}
+};
 
 export default User;

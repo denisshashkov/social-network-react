@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import PreLoader from "../../common/preloader/PreLoader";
 import ProfileStatus from "./ProfileStatus";
 import avatar from "../../../assets/image/user.png";
@@ -6,8 +6,10 @@ import classes from "./profileInfo.module.scss";
 import ProfileData from "./ProfileData";
 import ProfileDataForm from "../../Forms/ProfileDataForm";
 import { useDispatch } from "react-redux";
+import { ProfileType } from "types/types";
+import { PropsType } from "../Profile";
 
-const ProfileInfo = ({
+const ProfileInfo: React.FC<PropsType> = ({
   profile,
   status,
   updateStatus,
@@ -20,11 +22,11 @@ const ProfileInfo = ({
   const editModeHandler = () => {
     setEditMode(true);
   };
-  const choiseAvatarHandler = (e) => {
+  const choiseAvatarHandler = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(savePhoto(e.target.files[0]));
   };
 
-  const submitHandler = (formData, submitProps) => {
+  const submitHandler = (formData: ProfileType, submitProps: any) => {
     dispatch(saveData(formData, submitProps.setStatus));
     setEditMode(false);
   };

@@ -1,8 +1,19 @@
 import React from "react";
+import { ProfileType } from "types/types";
 import Button from "../../UI/button/Button";
 import classes from "./profileInfo.module.scss";
 
-function ProfileData({ profile, owner, editModeHandler }) {
+type PropsType = {
+  profile: ProfileType;
+  owner: boolean;
+  editModeHandler: () => void;
+};
+
+const ProfileData: React.FC<PropsType> = ({
+  profile,
+  owner,
+  editModeHandler,
+}) => {
   const activateEditMode = () => {
     editModeHandler();
   };
@@ -25,6 +36,6 @@ function ProfileData({ profile, owner, editModeHandler }) {
       {owner && <Button onClick={activateEditMode}>Edit</Button>}
     </div>
   );
-}
+};
 
 export default ProfileData;

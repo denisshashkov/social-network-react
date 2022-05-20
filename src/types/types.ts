@@ -4,6 +4,17 @@ export type PostsType = {
   likeCount: number;
 };
 
+export type ProfileType = {
+  userId: number;
+  lookingForAJob: boolean;
+  lookingForAJobDescription: string;
+  fullName: string;
+  contacts: ContactsType;
+  photos: PhotosType;
+  formData: FormDataType;
+  aboutMe: string;
+};
+
 export type ContactsType = {
   github: string;
   vk: string;
