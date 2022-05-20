@@ -1,8 +1,13 @@
-import { userAPI, followAPI, ResultCodesEnum } from "../api/api";
+import {
+  userAPI,
+  followUnfollowAPI,
+  ResultCodesEnum,
+  ResponseType,
+} from "../api/api";
 import { updateObjectInArray } from "../utils/helpers";
 import { UsersType } from "../types/types";
 import { ThunkAction } from "redux-thunk";
-import { AppStateType } from "./redux-store";
+import { AppStateType, InferActionsTypes } from "./redux-store";
 import { Dispatch } from "redux";
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
@@ -63,91 +68,52 @@ const usersReducer = (
   }
 };
 
-type ActionsTypes =
-  | FollowActionType
-  | UnFollowActionType
-  | GetUsersActionType
-  | GetCurrentPageActionType
-  | GetUsersCountActionType
-  | ToggleIsFetchingActionType
-  | DisabledButtonActionType;
+type ActionsTypes = InferActionsTypes<typeof actions>;
 
-type FollowActionType = {
-  type: typeof FOLLOW;
-  userId: number;
+export const actions = {
+  follow: (userId: number) =>
+    ({
+      type: FOLLOW,
+      userId,
+    } as const),
+
+  unFollow: (userId: number) =>
+    ({
+      type: UNFOLLOW,
+      userId,
+    } as const),
+
+  getUsers: (users: Array<UsersType>) =>
+    ({
+      type: GET_USERS,
+      users,
+    } as const),
+
+  getCurrentPage: (page: number) =>
+    ({
+      type: GET_CURRENT_PAGE,
+      page,
+    } as const),
+
+  getUsersCount: (usersCount: number) =>
+    ({
+      type: GET_USERS_COUNT,
+      usersCount,
+    } as const),
+
+  toggleIsFetching: (isFetching: boolean) =>
+    ({
+      type: TOGGLE_IS_FETCHING,
+      isFetching,
+    } as const),
+
+  disabledButton: (isFetching: boolean, userId: number) =>
+    ({
+      type: DISABLED_BUTTON,
+      isFetching,
+      userId,
+    } as const),
 };
-
-export const follow = (userId: number): FollowActionType => ({
-  type: FOLLOW,
-  userId,
-});
-
-type UnFollowActionType = {
-  type: typeof UNFOLLOW;
-  userId: number;
-};
-
-export const unFollow = (userId: number): UnFollowActionType => ({
-  type: UNFOLLOW,
-  userId,
-});
-
-type GetUsersActionType = {
-  type: typeof GET_USERS;
-  users: Array<UsersType>;
-};
-
-export const getUsers = (users: Array<UsersType>): GetUsersActionType => ({
-  type: GET_USERS,
-  users,
-});
-
-type GetCurrentPageActionType = {
-  type: typeof GET_CURRENT_PAGE;
-  page: number;
-};
-
-export const getCurrentPage = (page: number): GetCurrentPageActionType => ({
-  type: GET_CURRENT_PAGE,
-  page,
-});
-
-type GetUsersCountActionType = {
-  type: typeof GET_USERS_COUNT;
-  usersCount: number;
-};
-
-export const getUsersCount = (usersCount: number): GetUsersCountActionType => ({
-  type: GET_USERS_COUNT,
-  usersCount,
-});
-
-type ToggleIsFetchingActionType = {
-  type: typeof TOGGLE_IS_FETCHING;
-  isFetching: boolean;
-};
-
-export const toggleIsFetching = (
-  isFetching: boolean
-): ToggleIsFetchingActionType => ({
-  type: TOGGLE_IS_FETCHING,
-  isFetching,
-});
-
-type DisabledButtonActionType = {
-  type: typeof DISABLED_BUTTON;
-  isFetching: boolean;
-  userId: number;
-};
-
-export const disabledButton = (
-  isFetching: boolean,
-  userId: number
-): DisabledButtonActionType => ({
-  type: DISABLED_BUTTON,
-  isFetching,
-  userId,
-});
 
 type ThunkTypes = ThunkAction<
   Promise<void>,
@@ -163,40 +129,40 @@ export const getUsersThunkCreator = (
   pageSize: number
 ): ThunkTypes => {
   return async (dispatch) => {
-    dispatch(getCurrentPage(currentPage));
-    dispatch(toggleIsFetching(true));
+    dispatch(actions.getCurrentPage(currentPage));
+    dispatch(actions.toggleIsFetching(true));
     let data = await userAPI.setUsers(currentPage, pageSize);
-    dispatch(toggleIsFetching(false));
-    dispatch(getUsers(data.items));
-    dispatch(getUsersCount(data.totalCount));
+    dispatch(actions.toggleIsFetching(false));
+    dispatch(actions.getUsers(data.items));
+    dispatch(actions.getUsersCount(data.totalCount));
   };
 };
 
 const _followUnfollow = async (
   dispatch: DispatchType,
-  user: UsersType,
-  apiMethod: any,
-  actionCreator: (userId: number) => FollowActionType | UnFollowActionType
+  userId: number,
+  apiMethod: (userId: number) => Promise<ResponseType>,
+  actionCreator: (userId: number) => ActionsTypes
 ) => {
-  dispatch(disabledButton(true, user.id));
-  let data = await apiMethod(user);
+  dispatch(actions.disabledButton(true, userId));
+  let data = await apiMethod(userId);
   if (data.resultCode === ResultCodesEnum.Success) {
-    dispatch(actionCreator(user.id));
+    dispatch(actionCreator(userId));
   }
-  dispatch(disabledButton(false, user.id));
+  dispatch(actions.disabledButton(false, userId));
 };
 
-export const unFollowThunkCreator = (user: UsersType): ThunkTypes => {
+export const unFollowThunkCreator = (userId: number): ThunkTypes => {
   return async (dispatch) => {
-    let apiMethod = followAPI.unFollowUser.bind(userAPI);
-    _followUnfollow(dispatch, user, apiMethod, unFollow);
+    let apiMethod = followUnfollowAPI.unFollowUser.bind(userAPI);
+    await _followUnfollow(dispatch, userId, apiMethod, actions.unFollow);
   };
 };
 
-export const followThunkCreator = (user: UsersType): ThunkTypes => {
+export const followThunkCreator = (userId: number): ThunkTypes => {
   return async (dispatch) => {
-    let apiMethod = followAPI.followUser.bind(userAPI);
-    _followUnfollow(dispatch, user, apiMethod, follow);
+    let apiMethod = followUnfollowAPI.followUser.bind(userAPI);
+    await _followUnfollow(dispatch, userId, apiMethod, actions.follow);
   };
 };
 

@@ -1,6 +1,6 @@
 import Dialogs from "./Dialogs";
 import { withAuthNavigate } from "../../hoc/authNavigate";
-import { sendMessageCreator } from "../../redux/messagesReducer";
+import { actions } from "../../redux/messagesReducer";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { AppStateType } from "redux/redux-store";
@@ -14,20 +14,11 @@ type MapStatePropsType = {
 const mapStateToProps = (state: AppStateType): MapStatePropsType => {
   return {
     messagesPage: state.messagesPage,
-    //newMessageBody: state.messagesPage.newMessageBody,
     auth: state.auth.isAuth,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    sendMessage: (message: string) => {
-      dispatch(sendMessageCreator(message));
-    },
   };
 };
 
 export default compose(
   withAuthNavigate,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps, { ...actions })
 )(Dialogs);

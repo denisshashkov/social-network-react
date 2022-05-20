@@ -10,8 +10,8 @@ type PropsType = {
   users: Array<UsersType>;
   followingProgress: Array<number>;
   changePageHandler: (pageNumber: number) => void;
-  followThunkCreator: (user: UsersType) => void;
-  unFollowThunkCreator: (user: UsersType) => void;
+  followThunkCreator: (userId: number) => void;
+  unFollowThunkCreator: (userId: number) => void;
 };
 
 const Users: React.FC<PropsType> = (props) => {

@@ -1,32 +1,22 @@
 import { profileAPI, ResultCodesEnum } from "../api/api";
 import {
   PostsType,
-  ContactsType,
   PhotosType,
   FormDataType,
+  ProfileType,
 } from "../types/types";
 import { ThunkAction } from "redux-thunk";
-import { AppStateType } from "./redux-store";
+import { AppStateType, InferActionsTypes } from "./redux-store";
 const ADD_POST = "ADD-POST";
 const GET_USER_PROFILE = "GET_USER_PROFILE";
 const GET_PROFILE_STATUS = "GET_PROFILE_STATUS";
 const SAVE_PHOTO_SUCCESS = "SAVE_PHOTO_SUCCESS";
 const SAVE_DATA_SUCCESS = "SAVE_DATA_SUCCESS";
 
-export type ProfileType = {
-  userId: number;
-  lookingForAJob: boolean;
-  lookingForAJobDescription: string;
-  fullName: string;
-  contacts: ContactsType;
-  photos: PhotosType;
-  formData: FormDataType;
-};
-
 const initialState = {
   posts: [
     { id: 1, post: "how are you?", likeCount: 15 },
-    { id: 2, post: "Hello!", likeCount: 24 },
+    { id: 2, post: "Hello!", likeCount: 25 },
   ] as Array<PostsType>,
   profile: null as ProfileType | null,
   status: "",
@@ -36,7 +26,7 @@ export type InitialStateType = typeof initialState;
 
 const profileReducer = (
   state = initialState,
-  action: any
+  action: ActionsTypes
 ): InitialStateType => {
   switch (action.type) {
     case ADD_POST: {
@@ -75,68 +65,39 @@ const profileReducer = (
   }
 };
 
-type ActionsTypes =
-  | AddPostActionType
-  | GetUserProfileType
-  | GetProfileStatusActionType
-  | SavePhotoSuccessActionType
-  | SaveDataSuccessActionType;
+type ActionsTypes = InferActionsTypes<typeof actions>;
 
-type AddPostActionType = {
-  type: typeof ADD_POST;
-  post: string;
+export const actions = {
+  addPostActionCreator: (post: PostsType) =>
+    ({
+      type: ADD_POST,
+      post,
+    } as const),
+
+  setUserProfile: (profile: ProfileType) =>
+    ({
+      type: GET_USER_PROFILE,
+      profile,
+    } as const),
+
+  getProfileStatusActionCreator: (status: string) =>
+    ({
+      type: GET_PROFILE_STATUS,
+      status,
+    } as const),
+
+  savePhotoSuccessActionCreator: (photos: PhotosType) =>
+    ({
+      type: SAVE_PHOTO_SUCCESS,
+      photos,
+    } as const),
+
+  saveDataSuccessActionCreator: (formData: FormDataType) =>
+    ({
+      type: SAVE_DATA_SUCCESS,
+      formData,
+    } as const),
 };
-
-export const addPostActionCreator = (post: string): AddPostActionType => ({
-  type: ADD_POST,
-  post,
-});
-
-type GetUserProfileType = {
-  type: typeof GET_USER_PROFILE;
-  profile: ProfileType;
-};
-
-export const setUserProfile = (profile: ProfileType): GetUserProfileType => ({
-  type: GET_USER_PROFILE,
-  profile,
-});
-
-type GetProfileStatusActionType = {
-  type: typeof GET_PROFILE_STATUS;
-  status: string;
-};
-
-export const getProfileStatusActionCreator = (
-  status: string
-): GetProfileStatusActionType => ({
-  type: GET_PROFILE_STATUS,
-  status,
-});
-
-type SavePhotoSuccessActionType = {
-  type: typeof SAVE_PHOTO_SUCCESS;
-  photos: PhotosType;
-};
-
-export const savePhotoSuccessActionCreator = (
-  photos: PhotosType
-): SavePhotoSuccessActionType => ({
-  type: SAVE_PHOTO_SUCCESS,
-  photos,
-});
-
-type SaveDataSuccessActionType = {
-  type: typeof SAVE_DATA_SUCCESS;
-  formData: FormDataType;
-};
-
-export const saveDataSuccessActionCreator = (
-  formData: FormDataType
-): SaveDataSuccessActionType => ({
-  type: SAVE_DATA_SUCCESS,
-  formData,
-});
 
 type ThunkTypes = ThunkAction<
   Promise<void>,
@@ -148,13 +109,13 @@ type ThunkTypes = ThunkAction<
 export const getProfileThunkCreator = (userId: number): ThunkTypes => {
   return async (dispatch) => {
     let data = await profileAPI.getUserProfile(userId);
-    dispatch(setUserProfile(data));
+    dispatch(actions.setUserProfile(data));
   };
 };
 export const getProfileStatusThunkCreator = (userId: number): ThunkTypes => {
   return async (dispatch) => {
     let data = await profileAPI.getUserProfileStatus(userId);
-    dispatch(getProfileStatusActionCreator(data));
+    dispatch(actions.getProfileStatusActionCreator(data));
   };
 };
 
@@ -162,22 +123,16 @@ export const updateProfileStatusThunkCreator = (status: string): ThunkTypes => {
   return async (dispatch) => {
     let data = await profileAPI.updateUserProfileStatus(status);
     if (data.resultCode === ResultCodesEnum.Success) {
-      dispatch(getProfileStatusActionCreator(status));
+      dispatch(actions.getProfileStatusActionCreator(status));
     }
   };
 };
 
-type fileType = {
-  name: string;
-  size: number;
-  type: string;
-};
-
-export const savePhotoThunkCreator = (file: fileType): ThunkTypes => {
+export const savePhotoThunkCreator = (file: File): ThunkTypes => {
   return async (dispatch) => {
     let data = await profileAPI.savePhoto(file);
     if (data.resultCode === 0) {
-      dispatch(savePhotoSuccessActionCreator(data.data.photos));
+      dispatch(actions.savePhotoSuccessActionCreator(data.data.photos));
     }
   };
 };

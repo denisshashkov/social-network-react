@@ -1,14 +1,30 @@
 import { connect } from "react-redux";
-import React from "react";
 import LoginForm from "../Forms/LoginForm";
 import { setLoginThunkCreator } from "../../redux/authReducer";
 import { Navigate } from "react-router-dom";
 import classes from "./login.module.scss";
+import { AppStateType } from "redux/redux-store";
 
-const Login = ({ isAuth, setLoginThunkCreator, captcha }) => {
+type PropsType = {
+  isAuth: boolean;
+  captcha: string | null;
+  setLoginThunkCreator: (
+    email: string,
+    password: string,
+    rememberMe: boolean,
+    submitProps: any,
+    captcha: string
+  ) => void;
+};
+
+const Login: React.FC<PropsType> = ({
+  isAuth,
+  setLoginThunkCreator,
+  captcha,
+}) => {
   const submitHandler = (
     { email, password, rememberMe, captcha },
-    submitProps
+    submitProps: any
   ) => {
     setLoginThunkCreator(
       email,
@@ -31,7 +47,12 @@ const Login = ({ isAuth, setLoginThunkCreator, captcha }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+type MapStateToPropsType = {
+  isAuth: boolean;
+  captcha: string | null;
+};
+
+const mapStateToProps = (state: AppStateType): MapStateToPropsType => ({
   isAuth: state.auth.isAuth,
   captcha: state.auth.captcha,
 });

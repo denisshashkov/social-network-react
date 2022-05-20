@@ -28,8 +28,8 @@ type MapStatePropsType = {
 };
 
 type MapDispatchPropsType = {
-  followThunkCreator: (user: UsersType) => void;
-  unFollowThunkCreator: (user: UsersType) => void;
+  followThunkCreator: (userId: number) => void;
+  unFollowThunkCreator: (userId: number) => void;
   getUsersThunkCreator: (currentPage: number, pageSize: number) => void;
 };
 

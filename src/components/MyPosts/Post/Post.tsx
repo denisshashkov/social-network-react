@@ -2,7 +2,15 @@ import React from "react";
 import Button from "../../UI/button/Button";
 import classes from "./post.module.scss";
 
-const Post = ({ message, likeCount }) => {
+type Message = {
+  message: string;
+};
+
+type LikeCount = {
+  likeCount: number;
+};
+
+const Post: React.FC<Message & LikeCount> = ({ message, likeCount }) => {
   return (
     <div className={classes.item}>
       <div className={classes.item__left}>
