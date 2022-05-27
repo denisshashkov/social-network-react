@@ -1,6 +1,6 @@
 import React from "react";
 import { ProfileType } from "types/types";
-import MyPostsContainer from "../MyPosts/MyPostsContainer";
+import MyPosts from "../MyPosts/MyPosts";
 import classes from "./profile.module.scss";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 
@@ -33,7 +33,7 @@ const Profile: React.FC<PropsType> = ({
           saveData={saveData}
         />
       </div>
-      <MyPostsContainer />
+      <MyPosts />
     </main>
   );
 };

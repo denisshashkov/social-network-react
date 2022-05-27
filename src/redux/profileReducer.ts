@@ -14,10 +14,7 @@ const SAVE_PHOTO_SUCCESS = "SAVE_PHOTO_SUCCESS";
 const SAVE_DATA_SUCCESS = "SAVE_DATA_SUCCESS";
 
 const initialState = {
-  posts: [
-    { id: 1, post: "how are you?", likeCount: 15 },
-    { id: 2, post: "Hello!", likeCount: 25 },
-  ] as Array<PostsType>,
+  posts: [] as Array<PostsType>,
   profile: null as ProfileType | null,
   status: "",
 };

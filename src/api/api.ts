@@ -17,9 +17,17 @@ type UsersResponseType = {
 };
 
 export const userAPI = {
-  setUsers(currentPage = 1, pageSize = 5) {
+  setUsers(
+    currentPage = 1,
+    pageSize = 5,
+    term = "",
+    friend: null | boolean = null
+  ) {
     return instance
-      .get<UsersResponseType>(`users?page=${currentPage}&count=${pageSize}`)
+      .get<UsersResponseType>(
+        `users?page=${currentPage}&count=${pageSize}&term=${term}` +
+          (friend === null ? "" : `&friend=${friend}`)
+      )
       .then((response) => response.data);
   },
 };

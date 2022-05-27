@@ -7,15 +7,15 @@ import { UsersType } from "types/types";
 type PropsType = {
   user: UsersType;
   followingProgress: Array<number>;
-  followThunkCreator: (userId: number) => void;
-  unFollowThunkCreator: (userId: number) => void;
+  follow: (userId: number) => void;
+  unFollow: (userId: number) => void;
 };
 
 const User: React.FC<PropsType> = ({
   user,
-  followThunkCreator,
+  follow,
   followingProgress,
-  unFollowThunkCreator,
+  unFollow,
 }) => {
   return (
     <div>
@@ -33,7 +33,7 @@ const User: React.FC<PropsType> = ({
           <Button
             disabled={followingProgress.includes(user.id)}
             onClick={() => {
-              unFollowThunkCreator(user.id);
+              unFollow(user.id);
             }}
           >
             Unfollow
@@ -42,7 +42,7 @@ const User: React.FC<PropsType> = ({
           <Button
             disabled={followingProgress.includes(user.id)}
             onClick={() => {
-              followThunkCreator(user.id);
+              follow(user.id);
             }}
           >
             Follow

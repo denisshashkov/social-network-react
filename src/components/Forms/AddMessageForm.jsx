@@ -3,16 +3,19 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import Button from "../UI/button/Button";
 import classes from "./formStyles.module.scss";
+import { useSelector } from "react-redux";
+import { getStatus } from "redux/chatSelectors";
 
 const validationsSchema = Yup.object().shape({
   message: Yup.string().max(50, "Max length 50 symbols!"),
 });
 
 const AddMessageForm = ({ submitHandler }) => {
+  const status = useSelector(getStatus);
   return (
     <div>
       <Formik
-        initialValues={{ id: Date.now(), message: "" }}
+        initialValues={{ message: "" }}
         onSubmit={submitHandler}
         validationSchema={validationsSchema}
       >

@@ -17,7 +17,7 @@ import {
   saveDataThunkCreator,
 } from "../../redux/profileReducer";
 
-const ProfileContainer = () => {
+const ProfileContainer: React.FC = () => {
   const dispatch = useDispatch();
   const profile = useSelector(getProfile);
   const status = useSelector(getStatus);

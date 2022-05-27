@@ -15,3 +15,7 @@ export const getAuthorizedUserId = (state: AppStateType) => {
 export const getIsAuth = (state: AppStateType) => {
   return state.auth.isAuth;
 };
+
+export const getPosts = (state: AppStateType) => {
+  return state.profilePage.posts;
+};

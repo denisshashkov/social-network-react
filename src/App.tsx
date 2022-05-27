@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-import HeaderContainer from "./components/Header/HeaderContainer";
+import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
 import Preloader from "./components/common/preloader/PreLoader";
 import ErrorComponent from "./components/common/errors/ErrorComponent";
@@ -10,19 +10,17 @@ import {
   initializeSuccessThunkCreator,
   globalErrorThunkCreator,
 } from "./redux/appReducer";
-const DialogsContainer = lazy(
-  () => import("./components/Dialogs/DialogsContainer")
-);
+const DialogsPage = lazy(() => import("./components/Dialogs/DialogsPage"));
 const ProfileContainer = lazy(
   () => import("./components/Profile/ProfileContainer")
 );
-const UsersContainer = lazy(() => import("./components/Users/UsersContainer"));
+const UsersPage = lazy(() => import("./components/Users/UsersPage"));
 const News = lazy(() => import("./components/News/News"));
 const Music = lazy(() => import("./components/Music/Music"));
 const Settings = lazy(() => import("./components/Settings/Settings"));
 const Login = lazy(() => import("./components/Login/Login"));
 
-const App = () => {
+const App: React.FC = () => {
   const dispatch = useDispatch();
   const error = useSelector(getGlobalError);
   useEffect(() => {
@@ -42,15 +40,15 @@ const App = () => {
   }
   return (
     <div>
-      <HeaderContainer />
+      <Header />
       <div className="app__wrapper">
         <Navbar />
         <div className="app__wrapper__content">
           <Suspense fallback={<Preloader />}>
             <Routes>
               <Route path="/profile/*" element={<ProfileContainer />} />
-              <Route path="/users" element={<UsersContainer />} />
-              <Route path="/dialogs" element={<DialogsContainer />} />
+              <Route path="/users" element={<UsersPage />} />
+              <Route path="/dialogs" element={<DialogsPage />} />
               <Route path="/news" element={<News />} />
               <Route path="/music" element={<Music />} />
               <Route path="/settings" element={<Settings />} />

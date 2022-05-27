@@ -16,6 +16,7 @@ const GET_CURRENT_PAGE = "GET_CURRENT_PAGE";
 const GET_USERS_COUNT = "GET_USERS_COUNT";
 const TOGGLE_IS_FETCHING = "TOGGLE_IS_FETCHING";
 const DISABLED_BUTTON = "DISABLED_BUTTTON";
+const SET_FILTER = "SET_FILTER";
 
 const initialState = {
   users: [] as Array<UsersType>,
@@ -24,9 +25,14 @@ const initialState = {
   currentPage: 1 as number,
   isFetching: true,
   followingProgress: [] as Array<number>, // array of users id,
+  filter: {
+    term: "",
+    friend: null as null | boolean,
+  },
 };
 
 export type InitialStateType = typeof initialState;
+export type FilterType = typeof initialState.filter;
 
 const usersReducer = (
   state = initialState,
@@ -51,6 +57,8 @@ const usersReducer = (
       return { ...state, users: action.users };
     case GET_CURRENT_PAGE:
       return { ...state, currentPage: action.page };
+    case SET_FILTER:
+      return { ...state, filter: action.payload };
     case GET_USERS_COUNT:
       return { ...state, totalUsersCount: action.usersCount };
     case TOGGLE_IS_FETCHING:
@@ -95,6 +103,12 @@ export const actions = {
       page,
     } as const),
 
+  setFilter: (filter: FilterType) =>
+    ({
+      type: SET_FILTER,
+      payload: filter,
+    } as const),
+
   getUsersCount: (usersCount: number) =>
     ({
       type: GET_USERS_COUNT,
@@ -126,12 +140,19 @@ export type DispatchType = Dispatch<ActionsTypes>;
 
 export const getUsersThunkCreator = (
   currentPage: number,
-  pageSize: number
+  pageSize: number,
+  filter: FilterType
 ): ThunkTypes => {
   return async (dispatch) => {
-    dispatch(actions.getCurrentPage(currentPage));
     dispatch(actions.toggleIsFetching(true));
-    let data = await userAPI.setUsers(currentPage, pageSize);
+    dispatch(actions.getCurrentPage(currentPage));
+    dispatch(actions.setFilter(filter));
+    let data = await userAPI.setUsers(
+      currentPage,
+      pageSize,
+      filter.term,
+      filter.friend
+    );
     dispatch(actions.toggleIsFetching(false));
     dispatch(actions.getUsers(data.items));
     dispatch(actions.getUsersCount(data.totalCount));
