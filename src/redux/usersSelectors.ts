@@ -23,3 +23,7 @@ export const getTotalUserCount = (state: AppStateType) => {
 export const getPage = (state: AppStateType) => {
   return state.usersPage.currentPage;
 };
+
+export const getUsersFilter = (state: AppStateType) => {
+  return state.usersPage.filter;
+};

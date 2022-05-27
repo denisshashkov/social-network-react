@@ -23,7 +23,6 @@ const Post: React.FC<Message & LikeCount> = ({ message, likeCount }) => {
           <Button>{likeCount}</Button>
         </div>
       </div>
-
       <span>{message}</span>
     </div>
   );

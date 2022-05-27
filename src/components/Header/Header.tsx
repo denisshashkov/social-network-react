@@ -2,18 +2,17 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import Button from "../UI/button/Button";
+import { setLogoutThunkCreator } from "../../redux/authReducer";
+import { getIsAuth, getLogin } from "../../redux/authSelectors";
+import { useSelector } from "react-redux";
 import classes from "./header.module.scss";
 
-type PropsType = {
-  isAuth: boolean;
-  login: string;
-  logOut: () => void;
-};
-
-const Header: React.FC<PropsType> = (props) => {
+const Header: React.FC = () => {
   const dispatch = useDispatch();
+  const isAuth = useSelector(getIsAuth);
+  const login = useSelector(getLogin);
   const logoutHandler = () => {
-    dispatch(props.logOut());
+    dispatch(setLogoutThunkCreator());
   };
 
   return (
@@ -23,9 +22,9 @@ const Header: React.FC<PropsType> = (props) => {
       </div>
       <div className={classes.header__right}>
         <NavLink to={"/login"} className={classes.header__link}>
-          {props.isAuth ? (
+          {isAuth ? (
             <div className={classes.header__login}>
-              <b>{props.login}</b>
+              <b>{login}</b>
               <Button onClick={logoutHandler}>Logout</Button>
             </div>
           ) : (

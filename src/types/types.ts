@@ -51,12 +51,12 @@ export type DialogsDataType = {
   name: string;
 };
 
-export type MessagesType = {
+export type MessageType = {
   id: number;
   message: string;
 };
 
 export type messagesPageType = {
   dialogsData: Array<DialogsDataType>;
-  messages: Array<MessagesType>;
+  messages: Array<MessageType>;
 };
