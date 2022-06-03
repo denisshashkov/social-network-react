@@ -87,22 +87,25 @@ const Users: React.FC<PropsType> = () => {
 
   return (
     <div className={classes.users}>
-      <UsersSearchForm onFilterChanged={onFilterChanged} />
-      <Pagination
-        totalItemCount={totalUsersCount}
-        pageSize={pageSize}
-        currentPage={currentPage}
-        changePageHandler={changePageHandler}
-      />
-      {users.map((user) => (
-        <User
-          key={user.id}
-          user={user}
-          followingProgress={followingProgress}
-          follow={follow}
-          unFollow={unFollow}
+      <div className={classes.users__block}>
+        <Pagination
+          totalItemCount={totalUsersCount}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          changePageHandler={changePageHandler}
         />
-      ))}
+        {users.map((user) => (
+          <User
+            key={user.id}
+            user={user}
+            followingProgress={followingProgress}
+            follow={follow}
+            unFollow={unFollow}
+          />
+        ))}
+      </div>
+
+      <UsersSearchForm onFilterChanged={onFilterChanged} />
     </div>
   );
 };
