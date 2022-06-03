@@ -10,7 +10,7 @@ import {
   initializeSuccessThunkCreator,
   globalErrorThunkCreator,
 } from "./redux/appReducer";
-const DialogsPage = lazy(() => import("./components/Dialogs/DialogsPage"));
+const MessagesPage = lazy(() => import("./components/Messages/MessagesPage"));
 const ProfileContainer = lazy(
   () => import("./components/Profile/ProfileContainer")
 );
@@ -48,7 +48,7 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/profile/*" element={<ProfileContainer />} />
               <Route path="/users" element={<UsersPage />} />
-              <Route path="/dialogs" element={<DialogsPage />} />
+              <Route path="/dialogs" element={<MessagesPage />} />
               <Route path="/news" element={<News />} />
               <Route path="/music" element={<Music />} />
               <Route path="/settings" element={<Settings />} />

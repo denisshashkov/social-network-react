@@ -1,11 +1,5 @@
 import { chatApi, ChatMessageType, StatusType } from "api/chat-api";
 import { ThunkAction } from "redux-thunk";
-import {
-  authAPI,
-  ResultCodeForCaptcha,
-  ResultCodesEnum,
-  securityAPI,
-} from "../api/api";
 import { AppStateType, InferActionsTypes } from "./redux-store";
 import { Dispatch } from "redux";
 
@@ -27,7 +21,9 @@ const chatReducer = (
     case GET_MESSAGES:
       return {
         ...state,
-        messages: [...state.messages, ...action.payLoad.messages],
+        messages: [...state.messages, ...action.payLoad.messages].filter(
+          (m, index, array) => index >= array.length - 10
+        ),
       };
     case SET_STATUS:
       return {

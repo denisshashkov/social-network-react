@@ -13,7 +13,7 @@ const validationsSchema = Yup.object().shape({
 const AddMessageForm = ({ submitHandler }) => {
   const status = useSelector(getStatus);
   return (
-    <div>
+    <div className={classes.form}>
       <Formik
         initialValues={{ message: "" }}
         onSubmit={submitHandler}
